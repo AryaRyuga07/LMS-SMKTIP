@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            first: '#f9f7f7',
+            second: '#dbe2ef',
+            third: '#3f72af',
+            fourth: '#112d4e',
+          },
+          backgroundImage: {
+            'sea1': 'url("/src/assets/image/SMK (3).jpg")',
+            'sea2': 'url("/src/assets/image/SMK (2).jpg")',
+            'sea3': 'url("/src/assets/image/SMK (4).jpg")'
+          }
+        }
+      }
+    }
+  </script>
+  <!-- <link href="./src/assets/dist/output.css" rel="stylesheet"> -->
+  <title>RyeLMS</title>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
+</body>
+
+</html>
