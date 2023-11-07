@@ -11,11 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('classroom', function (Blueprint $table) {
+        Schema::create('submissions', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->foreignID('major_id')->references('id')->on('majors')->cascadeOnDelete();
-            $table->timestamps();
+            $table->foreignID('assignment_id')->references('id')->on('assignments')->cascadeOnDelete();
+            $table->foreignID('student_id')->references('user_id')->on('students')->cascadeOnDelete();
+
+			$table->dateTime('date');
+			$table->string('file');
+			$table->timestamps();
         });
     }
 
@@ -24,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('class');
+        //
     }
 };

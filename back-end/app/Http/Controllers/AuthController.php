@@ -16,7 +16,7 @@ class AuthController extends Controller
         ]);
 
         $username = $request->post('username');
-        $password = $request->post('password');
+        // $password = $request->post('password');
 
         $user = User::query()->where('name', '=', $username)->first();
         if ($user == null) {

@@ -3,164 +3,177 @@ import axios from "axios";
 
 import Table from "../../../../component/Table/Table";
 import StudentData from "../../../Data/DataTable/StudentData";
-import SidebarDashboard from "../../../../component/Sidenav/SidebarDashboard";
+import AdminSidebar from "../../../../component/Sidenav/AdminSidebar";
 import Card from "../../../../component/Card/Card";
 import Modal from "../../Modal/Modal";
 
 const User = () => {
-  // Teacher
-  const [teacher, setTeacher] = useState([]);
-  const [teacherData, setTeacherData] = useState({
+  // Student
+  const [classroomData, setClassroomData] = useState([]);
+  const [student, setStudent] = useState([]);
+  const [studentData, setStudentData] = useState({
     external_id: "",
     full_name: "",
+    classroom_id: "",
     username: "",
     password: "",
   });
-  const [openDeleteTeacher, setOpenDeleteTeacher] = useState(false);
-  const [openUpdateTeacher, setOpenUpdateTeacher] = useState(false);
-  const [openInsertTeacher, setOpenInsertTeacher] = useState(false);
-  const [idTeacher, setIdTeacher] = useState(0);
-
-  // Class
-  // const [student, setstudent] = useState([]);
-  // const [studentName, setstudentName] = useState("");
-  // const [classData, setClassData] = useState({ major_id: "", class: "", name: "", grade: "" });
-  // const [majorId, setMajorId] = useState("");
-  // const [grade, setGrade] = useState("");
-  // const [classUp, setClassUp] = useState("");
-  // const [openDeleteClassroom, setOpenDeleteClassroom] = useState(false);
-  // const [openUpdateClassroom, setOpenUpdateClassroom] = useState(false);
-  // const [openInsertClassroom, setOpenInsertClassroom] = useState(false);
-  // const [idClassroom, setIdClassroom] = useState(0);
-
-  const arrowDown = () => {
-    const card = document.getElementById("cardList");
-    card.classList.add("transition");
-    card.classList.add("duration-[3000ms]");
-    card.classList.add("translate-y-[-77em]");
-  };
-
-  const arrowUp = () => {
-    const card = document.getElementById("cardList");
-    card.classList.add("transition");
-    card.classList.add("duration-[3000ms]");
-    card.classList.remove("translate-y-[-77em]");
-  };
+  const [openDeleteStudent, setOpenDeleteStudent] = useState(false);
+  const [openUpdateStudent, setOpenUpdateStudent] = useState(false);
+  const [openInsertStudent, setOpenInsertStudent] = useState(false);
+  const [idStudent, setIdStudent] = useState(0);
 
   const clickRow = (row) => {
     const rowId = row.id;
     console.log(rowId);
   };
 
-  const setInsertTeacher = () => {
-    setOpenInsertTeacher(true);
-    setTeacherData({
-      ...teacherData,
+  const setInsertStudent = () => {
+    setOpenInsertStudent(true);
+    getClassroom();
+    setStudentData({
+      ...StudentData,
       external_id: "",
       full_name: "",
       username: "",
       password: "",
     });
-    // navigate("/admin/Teacher/insert");
+    // navigate("/admin/Student/insert");
   };
 
-  const setIdUpdateTeacher = (id) => {
-    setOpenUpdateTeacher(true);
-    setIdTeacher(id);
-    console.log(id)
+  const setIdUpdateStudent = (id) => {
+    setOpenUpdateStudent(true);
+    setIdStudent(id);
+    getClassroom();
     axios
-      .post("http://localhost:8000/api/teacher/" + id)
+      .post("http://localhost:8000/api/student/" + id)
       .then((res) => {
-        setTeacherData({
-          ...teacherData,
-          external_id: res.data.external_id,
-          full_name: res.data.full_name,
-          username: res.data.username,
-          password: res.data.password,
+        console.log(res.data);
+        setStudentData({
+          external_id: res.data.students[0].external_id,
+          full_name: res.data.students[0].full_name,
+          username: res.data.user.name,
+          password: res.data.user.password,
         });
       })
       .catch((err) => {
-        setTeacher({ message: "get data failed" });
+        setStudent({ message: "get data failed" });
       });
-    // navigate("/admin/Teacher/update");
+    // navigate("/admin/Student/update");
   };
 
-  const setIdDeleteTeacher = (id) => {
-    setOpenDeleteTeacher(true);
-    setIdTeacher(id);
+  const setIdDeleteStudent = (id) => {
+    setOpenDeleteStudent(true);
+    setIdStudent(id);
   };
 
-  const handleChangeTextTeacher = (e) => {
-    setTeacherData({
-      ...teacherData,
+  const handleChangeTextStudent = (e) => {
+    setStudentData({
+      ...studentData,
       [e.name]: e.value,
     });
   };
 
-  const InsertTeacher = () => {
-    const { external_id, full_name, username, password } = teacherData;
+  const InsertStudent = () => {
+    const { external_id, full_name, classroom_id, username, password } =
+      StudentData;
     axios
-      .post("http://localhost:8000/api/teacher/data/add", {
+      .post("http://localhost:8000/api/student/data/add", {
         external_id,
         full_name,
+        classroom_id,
         username,
         password,
       })
       .then((res) => {
         alert("Insert Success");
-        setOpenInsertTeacher(false);
+        setOpenInsertStudent(false);
         window.location.reload(true);
       })
       .catch((err) => {
-        setTeacher({ message: "Insert failed" });
+        setStudent({ message: "Insert failed" });
       });
   };
 
-  const DeleteTeacher = (id) => {
+  const DeleteStudent = (id) => {
     axios
-      .post("http://localhost:8000/api/teacher/delete/" + id)
+      .post("http://localhost:8000/api/student/delete/" + id)
       .then((res) => {
         alert("Delete Success");
-        setOpenDeleteTeacher(false);
+        setOpenDeleteStudent(false);
         window.location.reload(true);
       })
       .catch((err) => {
-        setTeacher({ message: "get data failed" });
+        setStudent({ message: "get data failed" });
       });
   };
 
-  const UpdateTeacher = (id) => {
-    const { external_id, full_name, username, password } = teacherData;
+  const UpdateStudent = (id) => {
+    const { external_id, full_name, classroom_id, username, password } =
+      StudentData;
     axios
-      .post("http://localhost:8000/api/teacher/update/" + id, {
+      .post("http://localhost:8000/api/student/update/" + id, {
         external_id,
         full_name,
+        classroom_id,
         username,
         password,
       })
       .then((res) => {
         alert("Update Success");
-        setOpenUpdateTeacher(false);
+        setOpenUpdateStudent(false);
         window.location.reload(true);
       })
       .catch((err) => {
-        setTeacher({ message: "Update failed" });
+        setStudent({ message: "Update failed" });
+      });
+  };
+
+  const getClassroom = () => {
+    axios
+      .post("http://localhost:8000/api/classroom")
+      .then((res) => {
+        setClassroomData(res.data);
+      })
+      .catch((err) => {
+        setClassroomData({ message: "get data failed" });
       });
   };
 
   useEffect(() => {
     axios
-      .post("http://localhost:8000/api/teacher")
+      .post("http://localhost:8000/api/student")
       .then((res) => {
-        setTeacher(res.data);
+        setStudent(res.data);
       })
       .catch((err) => {
-        setTeacher({ message: "get data failed" });
+        setStudent({ message: "get data failed" });
       });
   }, []);
 
-  const childrenInsertTeacher = (
-    <div className="text-center w-64 h-auto">
+  const renderOption = (data) => {
+    return data.map((item, index) => {
+      return (
+        <option
+          key={index}
+          value={item.id}
+          selected={classroomData[0].id === classroomData.classroom_id}
+        >
+          {item.name}
+        </option>
+      );
+    });
+  };
+
+  const changeDropDown = (e) => {
+    setClassroomData({
+      ...classroomData,
+      [e.name]: e.value,
+    });
+  };
+
+  const childrenInsertStudent = (
+    <div className="text-center w-96 h-auto">
       <div className="w-20 h-20 mx-auto flex justify-center items-center">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -177,93 +190,120 @@ const User = () => {
           />
         </svg>
       </div>
-      <div className="mx-auto my-4 w-48">
+      <div className="flex flex-col mx-auto my-4 w-48">
         <h3 className="text-lg font-black text-gray-800">Insert Form</h3>
-        <div className="mt-6 mb-8">
-          <label
-            htmlFor="external_id"
-            className="block text-sm font-medium leading-6 text-gray-900"
-          >
-            NIP
-          </label>
-          <div className="mt-2">
-            <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-              <input
-                type="text"
-                name="external_id"
-                id="external_id"
-                autoComplete="off"
-                className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                placeholder="NIP"
-                // value={teacherData.external_id}
-                onChange={({ target }) => handleChangeTextTeacher(target)}
-              />
+        <div className="flex justify-center">
+          <div className="flex flex-col mr-10">
+            <div className="mt-6 mb-8">
+              <label
+                htmlFor="external_id"
+                className="block text-sm font-medium leading-6 text-gray-900"
+              >
+                NIP
+              </label>
+              <div className="mt-2">
+                <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                  <input
+                    type="text"
+                    name="external_id"
+                    id="external_id"
+                    autoComplete="off"
+                    className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                    placeholder="NIP"
+                    // value={StudentData.external_id}
+                    onChange={({ target }) => handleChangeTextStudent(target)}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="mt-6 mb-8">
+              <label
+                htmlFor="full_name"
+                className="block text-sm font-medium leading-6 text-gray-900"
+              >
+                Name
+              </label>
+              <div className="mt-2">
+                <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                  <input
+                    type="text"
+                    name="full_name"
+                    id="full_name"
+                    autoComplete="off"
+                    className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                    placeholder="Full Name"
+                    // value={StudentData.full_name}
+                    onChange={({ target }) => handleChangeTextStudent(target)}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="sm:col-span-3 mt-6 mb-8">
+              <label
+                htmlFor="major"
+                className="block text-sm font-medium leading-6 text-gray-900"
+              >
+                Classroom
+              </label>
+              <div className="mt-2">
+                <select
+                  id="classroom_id"
+                  name="classroom_id"
+                  autoComplete="off"
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
+                  onChange={({ target }) => changeDropDown(target)}
+                  value={classroomData.id == classroomData.classroom_id}
+                >
+                  <option>-- Choose Classroom --</option>
+                  {renderOption(classroomData)}
+                </select>
+              </div>
             </div>
           </div>
-        </div>
-        <div className="mt-6 mb-8">
-          <label
-            htmlFor="full_name"
-            className="block text-sm font-medium leading-6 text-gray-900"
-          >
-            Name
-          </label>
-          <div className="mt-2">
-            <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-              <input
-                type="text"
-                name="full_name"
-                id="full_name"
-                autoComplete="off"
-                className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                placeholder="Full Name"
-                // value={teacherData.full_name}
-                onChange={({ target }) => handleChangeTextTeacher(target)}
-              />
+          <div className="flex flex-col">
+            <div className="mt-6 mb-8">
+              <label
+                htmlFor="username"
+                className="block text-sm font-medium leading-6 text-gray-900"
+              >
+                Username
+              </label>
+              <div className="mt-2">
+                <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                  <input
+                    type="text"
+                    name="username"
+                    id="username"
+                    autoComplete="off"
+                    className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                    placeholder="Username"
+                    // value={StudentData.username}
+                    onChange={({ target }) => handleChangeTextStudent(target)}
+                  />
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-        <div className="mt-6 mb-8">
-          <label
-            htmlFor="username"
-            className="block text-sm font-medium leading-6 text-gray-900"
-          >
-            Username
-          </label>
-          <div className="mt-2">
-            <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-              <input
-                type="text"
-                name="username"
-                id="username"
-                autoComplete="off"
-                className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                placeholder="Username"
-                // value={teacherData.username}
-                onChange={({ target }) => handleChangeTextTeacher(target)}
-              />
-            </div>
-          </div>
-        </div>
-        <div className="mt-6 mb-8">
-          <label
-            htmlFor="password"
-            className="block text-sm font-medium leading-6 text-gray-900"
-          >
-            Password
-          </label>
-          <div className="mt-2">
-            <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-              <input
-                type="password"
-                name="password"
-                id="password"
-                autoComplete="off"
-                className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                placeholder="Password"
-                // value={teacherData.password}
-                onChange={({ target }) => handleChangeTextTeacher(target)}
-              />
+            <div className="mt-6 mb-8">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium leading-6 text-gray-900"
+              >
+                Password
+              </label>
+              <div className="mt-2">
+                <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                  <input
+                    type="password"
+                    name="password"
+                    id="password"
+                    autoComplete="off"
+                    className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                    placeholder="Password"
+                    // value={StudentData.password}
+                    onChange={({ target }) => handleChangeTextStudent(target)}
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -271,13 +311,13 @@ const User = () => {
       <div className="flex gap-4">
         <button
           className="text-white bg-blue-700 shadow-blue-400/40 w-full p-1 hover:bg-blue-500 rounded-md"
-          onClick={InsertTeacher}
+          onClick={InsertStudent}
         >
           Add
         </button>
         <button
           className="bg-white text-gray-500 w-full p-1 hover:bg-gray-500 hover:text-black rounded-md"
-          onClick={() => setOpenInsertTeacher(false)}
+          onClick={() => setOpenInsertStudent(false)}
         >
           Cancel
         </button>
@@ -285,7 +325,7 @@ const User = () => {
     </div>
   );
 
-  const childrenUpdateTeacher = (
+  const childrenUpdateStudent = (
     <div className="text-center w-64 h-auto">
       <div className="w-20 h-20 mx-auto flex justify-center items-center">
         <svg
@@ -304,7 +344,7 @@ const User = () => {
         </svg>
       </div>
       <div className="mx-auto my-4 w-48">
-        <h3 className="text-lg font-black text-gray-800">Insert Form</h3>
+        <h3 className="text-lg font-black text-gray-800">Update Form</h3>
         <div className="mt-6 mb-8">
           <label
             htmlFor="name"
@@ -321,8 +361,8 @@ const User = () => {
                 autoComplete="off"
                 className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                 placeholder="NIP"
-                value={teacherData.external_id}
-                onChange={({ target }) => handleChangeTextTeacher(target)}
+                value={studentData.external_id}
+                onChange={({ target }) => handleChangeTextStudent(target)}
               />
             </div>
           </div>
@@ -343,10 +383,31 @@ const User = () => {
                 autoComplete="off"
                 className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                 placeholder="Full Name"
-                value={teacherData.full_name}
-                onChange={({ target }) => handleChangeTextTeacher(target)}
+                value={studentData.full_name}
+                onChange={({ target }) => handleChangeTextStudent(target)}
               />
             </div>
+          </div>
+        </div>
+        <div className="sm:col-span-3 mt-6 mb-8">
+          <label
+            htmlFor="major"
+            className="block text-sm font-medium leading-6 text-gray-900"
+          >
+            Classroom
+          </label>
+          <div className="mt-2">
+            <select
+              id="classroom_id"
+              name="classroom_id"
+              autoComplete="off"
+              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
+              onChange={({ target }) => changeDropDown(target)}
+              value={setClassroomData.id == classroomData.classroom_id}
+            >
+              <option>-- Choose Classroom --</option>
+              {renderOption(classroomData)}
+            </select>
           </div>
         </div>
         <div className="mt-6 mb-8">
@@ -365,8 +426,8 @@ const User = () => {
                 autoComplete="off"
                 className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                 placeholder="Username"
-                value={teacherData.username}
-                onChange={({ target }) => handleChangeTextTeacher(target)}
+                value={studentData.username}
+                onChange={({ target }) => handleChangeTextStudent(target)}
               />
             </div>
           </div>
@@ -387,8 +448,8 @@ const User = () => {
                 autoComplete="off"
                 className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                 placeholder="Password"
-                value={teacherData.password}
-                onChange={({ target }) => handleChangeTextTeacher(target)}
+                value={studentData.password}
+                onChange={({ target }) => handleChangeTextStudent(target)}
               />
             </div>
           </div>
@@ -397,13 +458,13 @@ const User = () => {
       <div className="flex gap-4">
         <button
           className="text-white bg-blue-700 shadow-blue-400/40 w-full p-1 hover:bg-blue-500 rounded-md"
-          onClick={() => UpdateTeacher(idTeacher)}
+          onClick={() => UpdateStudent(idStudent)}
         >
           Update
         </button>
         <button
           className="bg-white text-gray-500 w-full p-1 hover:bg-gray-500 hover:text-black rounded-md"
-          onClick={() => setOpenUpdateTeacher(false)}
+          onClick={() => setOpenUpdateStudent(false)}
         >
           Cancel
         </button>
@@ -411,7 +472,7 @@ const User = () => {
     </div>
   );
 
-  const childrenDeleteTeacher = (
+  const childrenDeleteStudent = (
     <div className="text-center w-56">
       <div className="w-20 h-20 mx-auto flex justify-center items-center">
         <svg
@@ -436,13 +497,13 @@ const User = () => {
       <div className="flex gap-4">
         <button
           className="text-white bg-red-700 shadow-red-400/40 w-full p-1 hover:bg-red-500 rounded-md"
-          onClick={() => DeleteTeacher(idTeacher)}
+          onClick={() => DeleteStudent(idStudent)}
         >
           Delete
         </button>
         <button
           className="bg-white text-gray-500 w-full p-1 hover:bg-gray-500 hover:text-black rounded-md"
-          onClick={() => setOpenDeleteTeacher(false)}
+          onClick={() => setOpenDeleteStudent(false)}
         >
           Cancel
         </button>
@@ -450,44 +511,9 @@ const User = () => {
     </div>
   );
 
-  const columnsStudent = [
-    {
-      name: "NISN",
-      selector: "name",
-      sortable: true,
-    },
-    {
-      name: "Name",
-      selector: "name",
-      sortable: true,
-    },
-    {
-      name: "Buttons",
-      button: true,
-      width: "12rem",
-      cell: (row) =>
-        row.showButtons ? (
-          <div className="flex">
-            <button
-              className="w-16 mr-5 bg-blue-600 p-2 rounded-md text-white hover:text-black hover:bg-blue-200 transition duration-300"
-              onClick={() => props.click(row.name)}
-            >
-              Edit
-            </button>
-            <button
-              className="w-16 bg-red-700 p-2 rounded-md text-white hover:text-black hover:bg-red-300 transition duration-300"
-              onClick={() => props.click(row.name)}
-            >
-              Delete
-            </button>
-          </div>
-        ) : null,
-    },
-  ];
-
   const clickhandler = (name) => console.log("delete", name);
 
-  const columnsTeacher = [
+  const columnsStudent = [
     {
       name: "NIP",
       selector: "external_id",
@@ -499,11 +525,6 @@ const User = () => {
       sortable: true,
     },
     {
-      name: "Username",
-      selector: "username",
-      sortable: true,
-    },
-    {
       name: "Buttons",
       button: true,
       width: "12rem",
@@ -511,13 +532,13 @@ const User = () => {
         <div className="flex">
           <button
             className="w-16 mr-5 bg-blue-600 p-2 rounded-md text-white hover:text-black hover:bg-blue-200 transition duration-300"
-            onClick={() => setIdUpdateTeacher(row.id)}
+            onClick={() => setIdUpdateStudent(row.user_id)}
           >
             Edit
           </button>
           <button
             className="w-16 bg-red-700 p-2 rounded-md text-white hover:text-black hover:bg-red-300 transition duration-300"
-            onClick={() => setIdDeleteTeacher(row.id)}
+            onClick={() => setIdDeleteStudent(row.user_id)}
           >
             Delete
           </button>
@@ -526,92 +547,40 @@ const User = () => {
     },
   ];
 
-  const tableTeacher = (
-    <Table
-      data={teacher}
-      click={clickhandler}
-      columns={columnsTeacher}
-      title="Teacher List"
-      clickRow={clickRow}
-      clicked={setInsertTeacher}
-    />
-  );
-
   const tableStudent = (
     <Table
-      data={StudentData}
+      data={student}
       click={clickhandler}
       columns={columnsStudent}
       title="Student List"
+      clickRow={clickRow}
+      clicked={setInsertStudent}
     />
   );
 
   return (
     <>
       <div className="w-screen h-screen flex overflow-y-hidden">
-        <SidebarDashboard />
+        <AdminSidebar />
         <div className="flex flex-col" id="cardList">
           <div className="w-screen flex flex-col" id="firstCard">
             <div>
-              <Card elements={tableTeacher} sizeClass="w-full h-max" />
-              <Modal
-                open={openDeleteTeacher}
-                onClose={() => setOpenDeleteTeacher(false)}
-                children={childrenDeleteTeacher}
-              />
-              <Modal
-                open={openUpdateTeacher}
-                onClose={() => setOpenUpdateTeacher(false)}
-                children={childrenUpdateTeacher}
-              />
-              <Modal
-                open={openInsertTeacher}
-                onClose={() => setOpenInsertTeacher(false)}
-                children={childrenInsertTeacher}
-              />
-            </div>
-            <div
-              className="ml-16 flex justify-center mt-10"
-              onClick={arrowDown}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="w-20 h-20 hover:text-blue-700 hover:cursor-pointer transition duration-300"
-                id="arrowDown"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M19.5 5.25l-7.5 7.5-7.5-7.5m15 6l-7.5 7.5-7.5-7.5"
-                />
-              </svg>
-            </div>
-          </div>
-
-          <div className="w-screen flex flex-col mt-[46rem]" id="secondCard">
-            <div>
               <Card elements={tableStudent} sizeClass="w-full h-max" />
-            </div>
-            <div className="ml-16 flex justify-center mt-10" onClick={arrowUp}>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="w-20 h-20 hover:text-blue-700 hover:cursor-pointer transition duration-300"
-                id="arrowUp"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M19.5 5.25l-7.5 7.5-7.5-7.5m15 6l-7.5 7.5-7.5-7.5"
-                />
-              </svg>
+              <Modal
+                open={openDeleteStudent}
+                onClose={() => setOpenDeleteStudent(false)}
+                children={childrenDeleteStudent}
+              />
+              <Modal
+                open={openUpdateStudent}
+                onClose={() => setOpenUpdateStudent(false)}
+                children={childrenUpdateStudent}
+              />
+              <Modal
+                open={openInsertStudent}
+                onClose={() => setOpenInsertStudent(false)}
+                children={childrenInsertStudent}
+              />
             </div>
           </div>
         </div>

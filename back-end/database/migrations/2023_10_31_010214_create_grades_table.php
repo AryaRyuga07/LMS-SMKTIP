@@ -11,10 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('majors', function (Blueprint $table) {
+        Schema::create('grades', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->timestamps();
+            $table->foreignID('assignment_id')->references('id')->on('assignments')->cascadeOnDelete();
+            $table->foreignID('student_id')->references('user_id')->on('students')->cascadeOnDelete();
+
+			$table->decimal('grade');
+			$table->timestamps();
         });
     }
 
@@ -23,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('major');
+        //
     }
 };

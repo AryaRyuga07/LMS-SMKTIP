@@ -29,9 +29,9 @@ use Illuminate\Support\Facades\Hash;
  */
 class User extends Model
 {
-	const ROLE_STUDENT = 'Student';
-	const ROLE_TEACHER = 'Teacher';
-	const ROLE_ADMIN = 'Admin';
+	const ROLE_STUDENT = 'student';
+	const ROLE_TEACHER = 'teacher';
+	const ROLE_ADMIN = 'admin';
 
 	const ROLES = [
 		self::ROLE_STUDENT,
@@ -39,7 +39,7 @@ class User extends Model
 		self::ROLE_ADMIN
 	];
 
-	protected $table = 'user';
+	protected $table = 'users';
 
 	protected $hidden = [
 		'password'

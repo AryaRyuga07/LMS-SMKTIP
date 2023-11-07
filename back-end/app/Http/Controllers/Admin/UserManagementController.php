@@ -12,25 +12,60 @@ use App\Services\User\UserCreationService;
 use Illuminate\Http\Request;
 use function back;
 
-class UserManagementController extends Controller{
+class UserManagementController extends Controller
+{
 
-	public function all(Request $request){
-		User::query()->paginate(20);
+	public function TeacherAll(Request $request)
+	{
+		$id = $request->id;
+
+		if ($id == null) {
+			return Teacher::all();
+		} else {
+			$user = User::query()->find($request->id);
+			$teacher = Teacher::where('user_id', '=' , $request->id)->get();
+
+			$data = [
+				'user' => $user,
+				'teachers' => $teacher,
+				// 'username' => $user->username,
+				// 'password' => $user->password,
+				// 'external_id' => $teacher->external_id,
+				// 'full_name' => $teacher->full_name,
+			];
+
+			return $data;
+		}
+	}
+	
+	public function StudentAll(Request $request)
+	{
+		$id = $request->id;
+
+		if ($id == null) {
+			return Student::all();
+		} else {
+			return Student::query()->find($request->id);
+		}
 	}
 
-	public function deleteStudent(Student $student, Request $request) {
+	public function deleteStudent(Student $student, Request $request)
+	{
 		$student->delete();
 		$student->user()->delete();
 		return back();
 	}
 
-	public function deleteTeacher(Teacher $teacher, Request $request) {
+	public function deleteTeacher(Request $request)
+	{
+		$teacher = Teacher::query()->find($request->id);
 		$teacher->delete();
 		$teacher->user()->delete();
 		return back();
 	}
 
-	public function deleteAdmin(User $user, Request $request) {
+	public function deleteAdmin(User $user, Request $request)
+	{
 		$user->user()->delete();
 		return back();
 	}
@@ -43,20 +78,20 @@ class UserManagementController extends Controller{
 			'external_id' => 'required',
 			'full_name' => 'required|regex:/^[a-zA-Z\s]*$/',
 			'classroom_id' => 'required|exists:classroom,id',
-			'major_id' => 'required|exists:majors,id'
+			// 'major_id' => 'required|exists:majors,id'
 		]);
 
-		UserCreationService::getInstance()->updateStudent($student->user_id,
+		UserCreationService::getInstance()->updateStudent(
+			$student->user_id,
 			$request->post('username'),
 			$request->post('password'),
 			$request->post('external_id'),
 			$request->post('full_name'),
 			(int) $request->post('classroom_id'),
-			(int) $request->post('major_id'),
+			// (int) $request->post('major_id'),
 		);
 
-		$request->session()->flash('message', 'Student updated.');
-		return back();
+		return response()->json(['message' => 'Update Data Success']);
 	}
 
 	public function updateTeacher(Teacher $teacher, Request $request)
@@ -68,14 +103,14 @@ class UserManagementController extends Controller{
 			'external_id' => 'required'
 		]);
 
-		UserCreationService::getInstance()->updateTeacher($teacher->user_id,
-			$request->post('username'),
-			$request->post('password'),
-			$request->post('external_id'),
-			$request->post('full_name')
+		UserCreationService::getInstance()->updateTeacher(
+			1,
+			$request->username,
+			$request->password,
+			$request->external_id,
+			$request->full_name,
 		);
 
-		$request->session()->flash('message', 'Teacher updated.');
-		return back();
+		return response()->json(['message' => 'Update Data Success']);
 	}
 }

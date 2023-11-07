@@ -1,13 +1,13 @@
 import TeacherSidebar from "../../../../component/Sidenav/TeacherSidebar";
 import Dashboard from "../../../../component/Dashboard/Dashboard";
 
-const TeacherDashboard = () => {
+const Attendance = () => {
   return (
-    <div className="max-w-screen max-h-screen flex">
+    <div className="w-screen flex">
       <TeacherSidebar />
-      <Dashboard />
+      <h1>Attend</h1>
     </div>
   );
 };
 
-export default TeacherDashboard;
+export default Attendance;

@@ -1,10 +1,9 @@
 import Table from "../../../../component/Table/Table";
-import SidebarDashboard from "../../../../component/Sidenav/SidebarDashboard";
+import AdminSidebar from "../../../../component/Sidenav/AdminSidebar";
 import Card from "../../../../component/Card/Card";
 import Modal from "../../Modal/Modal";
 import axios from "axios";
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 
 const Major = () => {
   const [major, setMajor] = useState([]);
@@ -13,8 +12,6 @@ const Major = () => {
   const [openUpdate, setOpenUpdate] = useState(false);
   const [openInsert, setOpenInsert] = useState(false);
   const [idMajor, setIdMajor] = useState(0);
-
-  const navigate = useNavigate();
 
   const handleChangeText = (e) => {
     setMajorName(e.value);
@@ -306,7 +303,7 @@ const Major = () => {
   return (
     <>
       <div className="w-screen flex">
-        <SidebarDashboard />
+        <AdminSidebar />
         <Card elements={table} sizeClass="w-full h-max" />
         <Modal
           open={openDelete}

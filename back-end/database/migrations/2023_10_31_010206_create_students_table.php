@@ -16,10 +16,10 @@ return new class extends Migration
 
 			$table->string('external_id')->index();
 			$table->string('full_name');
-			$table->string('image')->nullable();
+			// $table->string('image')->nullable();
 
 			// $table->foreignID('major_id')->references('id')->on('majors');
-			// $table->foreignID('class_id')->references('id')->on('class');
+			$table->foreignID('classroom_id')->references('id')->on('classrooms');
 
 			$table->timestamps();
         });
