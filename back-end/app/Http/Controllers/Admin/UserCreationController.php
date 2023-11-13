@@ -50,17 +50,17 @@ class UserCreationController extends Controller{
 			'external_id' => 'required',
 			'full_name' => 'required|regex:/^[a-zA-Z\s]*$/',
 			// 'image' => 'nullable|mimes:png,jpg',
-			'classroom_id' => 'required|exists:classroom,id',
+			'classroom_id' => 'required',
 			// 'major_id' => 'required|exists:majors,id'
 		]);
 
 		UserCreationService::getInstance()->createStudent(
-			$request->post('username'),
-			$request->post('password'),
-			$request->post('external_id'),
-			$request->post('full_name'),
-			$request->post('image'),
-			(int) $request->post('classroom_id'),
+			$request->username,
+			$request->password,
+			$request->external_id,
+			$request->full_name,
+			// $request->post('image'),
+			(int) $request->classroom_id,
 			// (int) $request->post('major_id')
 		);
 

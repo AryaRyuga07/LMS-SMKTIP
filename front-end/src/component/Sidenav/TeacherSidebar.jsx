@@ -1,11 +1,22 @@
+import axios from "axios";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-const TeacherSidebar = () => {
+const TeacherSidebar = (props) => {
   const navigate = useNavigate();
 
   const Logout = () => {
-    navigate("/auth/login");
+    const name = localStorage.getItem("user-info");
+    const id = localStorage.getItem("user-id");
+    axios
+      .post("http://localhost:8000/api/logout", { name, id })
+      .then((res) => {
+        localStorage.clear();
+        navigate("/auth/login");
+      })
+      .catch((err) => {
+        setData({ message: "logout failed" });
+      });
   };
 
   const Settings = () => {
@@ -24,8 +35,8 @@ const TeacherSidebar = () => {
     navigate("/teacher/assignment");
   };
 
-  const Lesson = () => {
-    navigate("/teacher/lesson");
+  const Announcement = () => {
+    navigate("/teacher/announcement");
   };
 
   const Grade = () => {
@@ -34,7 +45,7 @@ const TeacherSidebar = () => {
 
   return (
     <div>
-      <div className="w-12 h-screen bg-second flex justify-center drop-shadow-md shadow-slate-700 fixed z-50">
+      <div className="w-12 h-screen bg-second flex justify-center drop-shadow-md shadow-slate-700">
         <ul className="flex flex-col items-center mt-5">
           <li
             className="mb-5 hover:cursor-pointer hover:bg-third p-1 rounded-full hover:rounded hover:p-2 transition ease-in-out duration-500"
@@ -57,7 +68,7 @@ const TeacherSidebar = () => {
           </li>
           <li
             className="mb-5 hover:cursor-pointer hover:bg-third p-1 rounded-full hover:rounded hover:p-2 transition ease-in-out duration-500"
-            onClick={Lesson}
+            onClick={Announcement}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -70,7 +81,7 @@ const TeacherSidebar = () => {
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"
+                d="M10.34 15.84c-.688-.06-1.386-.09-2.09-.09H7.5a4.5 4.5 0 110-9h.75c.704 0 1.402-.03 2.09-.09m0 9.18c.253.962.584 1.892.985 2.783.247.55.06 1.21-.463 1.511l-.657.38c-.551.318-1.26.117-1.527-.461a20.845 20.845 0 01-1.44-4.282m3.102.069a18.03 18.03 0 01-.59-4.59c0-1.586.205-3.124.59-4.59m0 9.18a23.848 23.848 0 018.835 2.535M10.34 6.66a23.847 23.847 0 008.835-2.535m0 0A23.74 23.74 0 0018.795 3m.38 1.125a23.91 23.91 0 011.014 5.395m-1.014 8.855c-.118.38-.245.754-.38 1.125m.38-1.125a23.91 23.91 0 001.014-5.395m0-3.46c.495.413.811 1.035.811 1.73 0 .695-.316 1.317-.811 1.73m0-3.46a24.347 24.347 0 010 3.46"
               />
             </svg>
           </li>
@@ -175,6 +186,27 @@ const TeacherSidebar = () => {
             </svg>
           </li>
         </ul>
+      </div>
+
+      <div className={props.createClass}>
+        <div
+          className="absolute w-32 h-14 right-7 bottom-5 bg-white shadow-2xl shadow-black rounded-full flex items-center hover:bg-slate-500 transition duration-300 hover:cursor-pointer text-blue-700 hover:text-white"
+          onClick={props.onClick}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            className={`w-9 h-9 ml-3 transition-transform duration-300 ${props.classPlus}`}
+          >
+            <path
+              fillRule="evenodd"
+              d="M12 3.75a.75.75 0 01.75.75v6.75h6.75a.75.75 0 010 1.5h-6.75v6.75a.75.75 0 01-1.5 0v-6.75H4.5a.75.75 0 010-1.5h6.75V4.5a.75.75 0 01.75-.75z"
+              clipRule="evenodd"
+            />
+          </svg>
+          <p className="font-bold text-md ml-3">Create</p>
+        </div>
       </div>
     </div>
   );

@@ -7,7 +7,17 @@ const AdminSidebar = () => {
   const navigate = useNavigate();
 
   const Logout = () => {
-    navigate("/auth/login");
+    const name = localStorage.getItem("user-info");
+    const id = localStorage.getItem("user-id");
+    axios
+      .post("http://localhost:8000/api/logout", { name, id })
+      .then((res) => {
+        localStorage.clear();
+        navigate("/auth/login");
+      })
+      .catch((err) => {
+        setData({ message: "logout failed" });
+      });
   };
 
   const Settings = () => {

@@ -7,7 +7,7 @@ import styled from "styled-components";
 const Input = styled.input.attrs((props) => ({
   size: props.small ? 5 : undefined,
 }))`
-  height: 32px;
+  height: 3rem;
   width: 200px;
   border-radius: 3px;
   border-top-left-radius: 5px;
@@ -23,7 +23,7 @@ const EyeButton = styled.button`
   border-bottom-left-radius: 0;
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
-  height: 32px;
+  height: 3rem;
   width: 32px;
   text-align: center;
   display: flex;
@@ -44,18 +44,19 @@ const PasswordInput = ({ value, onChange, onClick, eyes, type }) => (
     <Input
       id="search"
       type={type}
-      placeholder="Password..."
+      placeholder="Password"
       autoComplete="off"
       value={value}
+      name="password"
       onChange={onChange}
     />
     <EyeButton onClick={onClick}>{eyes}</EyeButton>
   </>
 );
 
-const Password = () => {
+const Password = ({onChange, value}) => {
   const [click, setClick] = useState(true);
-  const [type, setType] = useState("text");
+  const [type, setType] = useState("password");
 
   const eyeOpen = (
     <svg
@@ -98,7 +99,7 @@ const Password = () => {
 
   const handleClick = () => {
     click ? setClick(false) : setClick(true);
-    click ? setType("password") : setType("text");
+    click ? setType("text") : setType("password");
   };
 
   return (
@@ -106,7 +107,9 @@ const Password = () => {
           <PasswordInput
             type={type}
             onClick={handleClick}
-            eyes={click ? eyeOpen : eyeClose}
+            onChange={onChange}
+            value={value}
+            eyes={click ? eyeClose : eyeOpen}
           />
     </div>
   );

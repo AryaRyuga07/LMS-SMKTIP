@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 import Table from "../../../../component/Table/Table";
-import StudentData from "../../../Data/DataTable/StudentData";
 import AdminSidebar from "../../../../component/Sidenav/AdminSidebar";
 import Card from "../../../../component/Card/Card";
 import Modal from "../../Modal/Modal";
@@ -32,9 +31,10 @@ const User = () => {
     setOpenInsertStudent(true);
     getClassroom();
     setStudentData({
-      ...StudentData,
+      ...studentData,
       external_id: "",
       full_name: "",
+      classroom_id: "",
       username: "",
       password: "",
     });
@@ -76,7 +76,7 @@ const User = () => {
 
   const InsertStudent = () => {
     const { external_id, full_name, classroom_id, username, password } =
-      StudentData;
+      studentData;
     axios
       .post("http://localhost:8000/api/student/data/add", {
         external_id,
@@ -110,7 +110,7 @@ const User = () => {
 
   const UpdateStudent = (id) => {
     const { external_id, full_name, classroom_id, username, password } =
-      StudentData;
+      studentData;
     axios
       .post("http://localhost:8000/api/student/update/" + id, {
         external_id,

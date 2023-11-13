@@ -1,17 +1,10 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import Password from "../../../component/Password/Password";
+import Password from "../../component/Password/Password";
 
-const Login = () => {
-  let role = localStorage.getItem("role");
-  useEffect(() => {
-    if (localStorage.getItem("user-info") != null) {
-      navigate(`/${role}/dashboard`);
-    }
-  }, []);
-
+const Tester = () => {
   const [data, setData] = useState({ username: "", password: "", message: "" });
   const navigate = useNavigate();
 
@@ -28,21 +21,12 @@ const Login = () => {
       .post("http://localhost:8000/api/login", { username, password })
       .then((res) => {
         setData({ message: res.data.message });
-        if (res.data.role == "admin") {
+        if (res.data.role == "Admin") {
           navigate("/admin/dashboard");
-          localStorage.setItem("user-info", res.data.name);
-          localStorage.setItem("role", res.data.role);
-          localStorage.setItem("user-id", res.data.id);
-        } else if (res.data.role == "teacher") {
+        } else if (res.data.role == "Teacher") {
           navigate("/teacher/dashboard");
-          localStorage.setItem("user-info", res.data.name);
-          localStorage.setItem("role", res.data.role);
-          localStorage.setItem("user-id", res.data.id);
         } else {
           navigate("/");
-          localStorage.setItem("user-info", res.data.name);
-          localStorage.setItem("role", res.data.role);
-          localStorage.setItem("user-id", res.data.id);
         }
       })
       .catch((err) => {
@@ -63,10 +47,7 @@ const Login = () => {
             onChange={({ target }) => handleChangeText(target)}
           />
           <Password onChange={({ target }) => handleChangeText(target)} />
-          <button
-            className="bg-blue-700 hover:bg-blue-300 transition duration-300 text-xl font-bold py-2 w-56 mt-5 rounded-md mb-5"
-            onClick={handleLoginSubmit}
-          >
+          <button className="bg-blue-700 hover:bg-blue-300 transition duration-300 text-xl font-bold py-2 w-56 mt-5 rounded-md mb-5" onClick={handleLoginSubmit}>
             Login
           </button>
           <p>{data.message}</p>
@@ -76,4 +57,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Tester;

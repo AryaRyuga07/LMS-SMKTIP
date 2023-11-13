@@ -2,6 +2,7 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import NotFound from "../../../component/NotFound/NotFound";
+import ProtectedAdmin from "./ProtectedAdmin";
 // Teacher
 import TeacherDashboard from "../Teacher/Dashboard/TeacherDashboard";
 // Admin
@@ -16,9 +17,9 @@ import Home from "../User/Home/Home";
 import Login from "../Login/Login";
 import Assignment from "../Teacher/Assignment/Assignment";
 import Attendance from "../Teacher/Attendance/Attendance";
-import Lesson from "../Teacher/Lesson/Lesson";
+import Announcement from "../Teacher/Announcement/Announcement";
 
-import Password from "../../../component/Password/Password"
+import Tester from "../../Tester/Tester";
 
 function App() {
   return (
@@ -26,22 +27,22 @@ function App() {
       <Routes>
         <Route path="/auth/login" element={<Login />} />
         {/* Admin */}
-        <Route path="/admin/dashboard" element={<AdminDashboard />} />
-        <Route path="/admin/major" element={<Major />} />
-        <Route path="/admin/subject" element={<Subject />} />
-        <Route path="/admin/group" element={<Group />} />
-        <Route path="/admin/user" element={<User />} />
-        <Route path="/admin/teacher" element={<Teacher />} />
+        <Route path="/admin/dashboard" element={<ProtectedAdmin Component={<AdminDashboard />} />} />
+        <Route path="/admin/major" element={<ProtectedAdmin Component={<Major />} />} />
+        <Route path="/admin/subject" element={<ProtectedAdmin Component={<Subject />} />} />
+        <Route path="/admin/group" element={<ProtectedAdmin Component={<Group />} />} />
+        <Route path="/admin/user" element={<ProtectedAdmin Component={<User />} />} />
+        <Route path="/admin/teacher" element={<ProtectedAdmin Component={<Teacher />} />} />
         {/* Teacher */}
-        <Route path="/teacher/dashboard" element={<TeacherDashboard />} />
-        <Route path="/teacher/assignment" element={<Assignment />} />
-        <Route path="/teacher/attendance" element={<Attendance />} />
-        <Route path="/teacher/lesson" element={<Lesson />} />
+        <Route path="/teacher/dashboard" element={<ProtectedAdmin TeacherComponent={<TeacherDashboard />} />} />
+        <Route path="/teacher/assignment" element={<ProtectedAdmin TeacherComponent={<Assignment />} />} />
+        <Route path="/teacher/attendance" element={<ProtectedAdmin TeacherComponent={<Attendance />} />} />
+        <Route path="/teacher/announcement" element={<ProtectedAdmin TeacherComponent={<Announcement />} />} />
         {/* User */}
-        <Route path="/home" element={<Home />} />
+        <Route path="/home" element={<ProtectedAdmin UserComponent={<Home />} />} />
         {/* Routes Test */}
-        <Route path="/" element={<Home />} />
-        <Route path="/component/test" element={<Password />} />
+        <Route path="/" element={<ProtectedAdmin UserComponent={<Home />} />} />
+        <Route path="/component/test" element={<Tester />} />
         <Route path="*" element={ <NotFound /> } />
       </Routes>
     </Router>

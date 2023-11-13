@@ -49,19 +49,18 @@ class UserManagementController extends Controller
 		}
 	}
 
-	public function deleteStudent(Student $student, Request $request)
+	public function deleteStudent(Request $request)
 	{
-		$student->delete();
-		$student->user()->delete();
-		return back();
+		Student::query()->find($request->id)->delete();
+		User::query()->find($request->id)->delete();
+		return response()->json(['message' => 'Delete Data Success']);
 	}
 
 	public function deleteTeacher(Request $request)
 	{
-		$teacher = Teacher::query()->find($request->id);
-		$teacher->delete();
-		$teacher->user()->delete();
-		return back();
+		Teacher::query()->find($request->id)->delete();
+		User::query()->find($request->id)->delete();
+		return response()->json(['message' => 'Delete Data Success']);
 	}
 
 	public function deleteAdmin(User $user, Request $request)
@@ -103,10 +102,12 @@ class UserManagementController extends Controller
 			'external_id' => 'required'
 		]);
 
+		$password = ($request->password == null) ? "" : $request->password;
+
 		UserCreationService::getInstance()->updateTeacher(
-			1,
+			$request->id,
 			$request->username,
-			$request->password,
+			$password,
 			$request->external_id,
 			$request->full_name,
 		);

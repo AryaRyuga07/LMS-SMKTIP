@@ -33,19 +33,19 @@ const Table = (props) => {
 
   // Loader
   const [pending, setPending] = useState(true);
-	const [rows, setRows] = useState([]);
+  const [rows, setRows] = useState([]);
 
-	useEffect(() => {
-		const timeout = setTimeout(() => {
-			setRows(props.data);
-			setPending(false);
-		}, 2000);
-		return () => clearTimeout(timeout);
-	}, []);
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setRows(props.data);
+      setPending(false);
+    }, 2000);
+    return () => clearTimeout(timeout);
+  }, []);
   // End Loader
 
   return (
-    <div className="w-full h-max">
+    <div className="w-[96vw] h-max">
       <DataTable
         title={props.title}
         columns={props.columns}
@@ -59,7 +59,9 @@ const Table = (props) => {
         onRowClicked={props.clickRow}
         keyField="id"
       />
-      <Button buttonName={"+ Add Data"} clicked={props.clicked} />
+      <div className={props.buttonClass}>
+        <Button buttonName={"+ Add Data"} clicked={props.clicked} />
+      </div>
     </div>
   );
 };

@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 import Table from "../../../../component/Table/Table";
-import StudentData from "../../../Data/DataTable/StudentData";
 import AdminSidebar from "../../../../component/Sidenav/AdminSidebar";
 import Card from "../../../../component/Card/Card";
 import Modal from "../../Modal/Modal";
@@ -44,7 +43,7 @@ const Teacher = () => {
     axios
       .post("http://localhost:8000/api/teacher/" + id)
       .then((res) => {
-        console.log(res.data)
+        console.log(res.data);
         setTeacherData({
           external_id: res.data.teachers[0].external_id,
           full_name: res.data.teachers[0].full_name,
@@ -106,10 +105,10 @@ const Teacher = () => {
     const { external_id, full_name, username, password } = teacherData;
     axios
       .post("http://localhost:8000/api/teacher/update/" + id, {
-        external_id,
-        full_name,
         username,
         password,
+        external_id,
+        full_name,
       })
       .then((res) => {
         alert("Update Success");

@@ -31,7 +31,7 @@ class UserCreationService
 		return $user;
 	}
 
-	private function update(User|int $user, string $username, string $password, string $role) : User
+	private function update(string $user, string $username, string $password, string $role)
 	{
 		$update = [
 			'name' => $username,
@@ -40,16 +40,11 @@ class UserCreationService
 		if($password !== "") {
 			$update['password'] = Hash::make($password);
 		}
-		User::query()->find($user instanceof User ? $user->id : $user)->update($update);
-		if(!$user instanceof User) {
-			/** @var User $ret */
-			$ret = User::query()->find($user);
-			return $ret;
-		}
+		User::query()->find($user)->update($update);
 		return $user;
 	}
 
-	public function createStudent(string $username, string $password, string $externalID, string $fullName, ?UploadedFile $image, Classroom|int $classroom) : void
+	public function createStudent(string $username, string $password, string $externalID, string $fullName, int $classroom) : void
 	{
 		$user = $this->create($username, $password, User::ROLE_STUDENT);
 
@@ -58,12 +53,12 @@ class UserCreationService
 		$student->external_id = $externalID;
 		$student->full_name = $fullName;
 
-		if($image !== null){
-			$image->move(public_path('images/student'), $fileName = Str::random(16) . '.' . $image->extension());
-			$student->image = $fileName;
-		}
+		// if($image !== null){
+		// 	$image->move(public_path('images/student'), $fileName = Str::random(16) . '.' . $image->extension());
+		// 	$student->image = $fileName;
+		// }
 
-		$student->classroom_id = $classroom instanceof Classroom ? $classroom->id : $classroom;
+		$student->classroom_id = $classroom;
 		// $student->major_id = $major instanceof Major ? $major->id : $major;
 
 		$student->save();
@@ -89,26 +84,24 @@ class UserCreationService
 		$this->create($username, $password, User::ROLE_ADMIN);
 	}
 
-	public function updateStudent(Student|int $student, string $username, string $password, string|int $external_id, string $full_name, Classroom|int $classroom) : void
+	public function updateStudent(string $student, string $username, string $password, string|int $external_id, string $full_name, Classroom|int $classroom) : void
 	{
-		$user = $this->update($student, $username, $password, User::ROLE_STUDENT);
+		$this->update($student, $username, $password, User::ROLE_STUDENT);
 
-		Student::query()->find($student instanceof Student ? $student->user_id : $student)
+		Student::query()->find($student)
 			->update([
-				'user_id' => $user->id,
 				'external_id' => $external_id,
 				'full_name' => $full_name,
 				'classroom_id' => $classroom instanceof Classroom ? $classroom->id : $classroom
 			]);
 	}
 
-	public function updateTeacher(Teacher|int $teacher, string $username, string $password, string|int $external_id, string $full_name) : void
+	public function updateTeacher(string $teacher, string $username, string $password, string|int $external_id, string $full_name) : void
 	{
-		$user = $this->update($teacher, $username, $password, User::ROLE_TEACHER);
+		$this->update($teacher, $username, $password, User::ROLE_TEACHER);
 
-		Teacher::query()->find($teacher instanceof Teacher ? $teacher->user_id : $teacher)
+		Teacher::query()->find($teacher)
 			->update([
-				'user_id' => $user->id,
 				'external_id' => $external_id,
 				'full_name' => $full_name
 			]);

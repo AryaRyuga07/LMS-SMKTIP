@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class AuthController extends Controller
 {
@@ -15,30 +17,33 @@ class AuthController extends Controller
             'password' => 'required'
         ]);
 
-        $username = $request->post('username');
-        // $password = $request->post('password');
+        $username = $request->username;
+        $password = $request->password;
 
         $user = User::query()->where('name', '=', $username)->first();
-        if ($user == null) {
-            return response()->json(['message' => 'Login Failed Bro', 'role' => 'failed']);
-        }
+        if ($user === null || !$user->isPasswordValid($password)) {
+            return response()->json(['message' => 'Invalid username or password', 'role' => 'failed']);
+		}
         
         if ($user->isAdmin()) {
-            return response()->json(['message' => 'Login Success', 'role' => 'Admin']);
+            DB::statement('CALL logUser(?, ?, ?, ?)', array($user->id, $user->name, "login", Carbon::now()));
+            return response()->json(['message' => 'Login Success', 'role' => 'admin', 'name' => $user->name, 'id' => $user->id]);
 		}
         
 		if ($user->isTeacher()) {
-            return response()->json(['message' => 'Login Success', 'role' => 'Teacher']);
+            DB::statement('CALL logUser(?, ?, ?, ?)', array($user->id, $user->name, "login", Carbon::now()));
+            return response()->json(['message' => 'Login Success', 'role' => 'teacher', 'name' => $user->name, 'id' => $user->id]);
 		}
-
+        
 		// Redirect non-admin users
-        return response()->json(['message' => 'Login Success', 'role' => 'Student']);
-
+        DB::statement('CALL logUser(?, ?, ?, ?)', array($user->id, $user->name, "login", Carbon::now()));
+        return response()->json(['message' => 'Login Success', 'role' => 'student', 'name' => $user->name, 'id' => $user->id]);
+        
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
-        Auth::logout();
-        return response()->json(['message' => 'Logged out']);
+        DB::statement('CALL logUser(?, ?, ?, ?)', array($request->id, $request->name, "logout", Carbon::now()));
+        return response()->json(['message' => 'Logout Success']);
     }
 }

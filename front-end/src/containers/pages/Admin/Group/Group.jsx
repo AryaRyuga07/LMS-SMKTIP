@@ -133,11 +133,6 @@ const Group = () => {
 
   const columnsClassroom = [
     {
-      name: "Major",
-      selector: "major_id",
-      sortable: true,
-    },
-    {
       name: "Class",
       selector: "name",
       sortable: true,
