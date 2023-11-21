@@ -132,7 +132,7 @@ const Teacher = () => {
   }, []);
 
   const childrenInsertTeacher = (
-    <div className="text-center w-64 h-auto">
+    <div className="text-center w-96 h-auto">
       <div className="w-20 h-20 mx-auto flex justify-center items-center">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -150,92 +150,98 @@ const Teacher = () => {
         </svg>
       </div>
       <div className="mx-auto my-4 w-48">
-        <h3 className="text-lg font-black text-gray-800">Insert Form</h3>
-        <div className="mt-6 mb-8">
-          <label
-            htmlFor="external_id"
-            className="block text-sm font-medium leading-6 text-gray-900"
-          >
-            NIP
-          </label>
-          <div className="mt-2">
-            <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-              <input
-                type="text"
-                name="external_id"
-                id="external_id"
-                autoComplete="off"
-                className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                placeholder="NIP"
-                // value={teacherData.external_id}
-                onChange={({ target }) => handleChangeTextTeacher(target)}
-              />
+        <h3 className="text-lg font-black text-gray-800">Update Form</h3>
+        <div className="flex justify-center">
+          <div className="flex flex-col mr-10">
+            <div className="mt-6 mb-8">
+              <label
+                htmlFor="name"
+                className="block text-sm font-medium leading-6 text-gray-900"
+              >
+                NIP
+              </label>
+              <div className="mt-2">
+                <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                  <input
+                    type="text"
+                    name="external_id"
+                    id="external_id"
+                    autoComplete="off"
+                    className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                    placeholder="NIP"
+                    value={teacherData.external_id}
+                    onChange={({ target }) => handleChangeTextTeacher(target)}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="mt-6 mb-8">
+              <label
+                htmlFor="name"
+                className="block text-sm font-medium leading-6 text-gray-900"
+              >
+                Name
+              </label>
+              <div className="mt-2">
+                <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                  <input
+                    type="text"
+                    name="full_name"
+                    id="full_name"
+                    autoComplete="off"
+                    className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                    placeholder="Full Name"
+                    value={teacherData.full_name}
+                    onChange={({ target }) => handleChangeTextTeacher(target)}
+                  />
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-        <div className="mt-6 mb-8">
-          <label
-            htmlFor="full_name"
-            className="block text-sm font-medium leading-6 text-gray-900"
-          >
-            Name
-          </label>
-          <div className="mt-2">
-            <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-              <input
-                type="text"
-                name="full_name"
-                id="full_name"
-                autoComplete="off"
-                className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                placeholder="Full Name"
-                // value={teacherData.full_name}
-                onChange={({ target }) => handleChangeTextTeacher(target)}
-              />
+          <div className="flex flex-col">
+            <div className="mt-6 mb-8">
+              <label
+                htmlFor="name"
+                className="block text-sm font-medium leading-6 text-gray-900"
+              >
+                Username
+              </label>
+              <div className="mt-2">
+                <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                  <input
+                    type="text"
+                    name="username"
+                    id="username"
+                    autoComplete="off"
+                    className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                    placeholder="Username"
+                    value={teacherData.username}
+                    onChange={({ target }) => handleChangeTextTeacher(target)}
+                  />
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-        <div className="mt-6 mb-8">
-          <label
-            htmlFor="username"
-            className="block text-sm font-medium leading-6 text-gray-900"
-          >
-            Username
-          </label>
-          <div className="mt-2">
-            <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-              <input
-                type="text"
-                name="username"
-                id="username"
-                autoComplete="off"
-                className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                placeholder="Username"
-                // value={teacherData.username}
-                onChange={({ target }) => handleChangeTextTeacher(target)}
-              />
-            </div>
-          </div>
-        </div>
-        <div className="mt-6 mb-8">
-          <label
-            htmlFor="password"
-            className="block text-sm font-medium leading-6 text-gray-900"
-          >
-            Password
-          </label>
-          <div className="mt-2">
-            <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-              <input
-                type="password"
-                name="password"
-                id="password"
-                autoComplete="off"
-                className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                placeholder="Password"
-                // value={teacherData.password}
-                onChange={({ target }) => handleChangeTextTeacher(target)}
-              />
+            <div className="mt-6 mb-8">
+              <label
+                htmlFor="name"
+                className="block text-sm font-medium leading-6 text-gray-900"
+              >
+                Password
+              </label>
+              <div className="mt-2">
+                <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                  <input
+                    type="password"
+                    name="password"
+                    id="password"
+                    autoComplete="off"
+                    className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                    placeholder="Password"
+                    value={teacherData.password}
+                    onChange={({ target }) => handleChangeTextTeacher(target)}
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -258,7 +264,7 @@ const Teacher = () => {
   );
 
   const childrenUpdateTeacher = (
-    <div className="text-center w-64 h-auto">
+    <div className="text-center w-96 h-auto">
       <div className="w-20 h-20 mx-auto flex justify-center items-center">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -277,91 +283,100 @@ const Teacher = () => {
       </div>
       <div className="mx-auto my-4 w-48">
         <h3 className="text-lg font-black text-gray-800">Update Form</h3>
-        <div className="mt-6 mb-8">
-          <label
-            htmlFor="name"
-            className="block text-sm font-medium leading-6 text-gray-900"
-          >
-            NIP
-          </label>
-          <div className="mt-2">
-            <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-              <input
-                type="text"
-                name="external_id"
-                id="external_id"
-                autoComplete="off"
-                className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                placeholder="NIP"
-                value={teacherData.external_id}
-                onChange={({ target }) => handleChangeTextTeacher(target)}
-              />
+        <div className="flex justify-center">
+          <div className="flex flex-col mr-10">
+            <div className="mt-6 mb-8">
+              <label
+                htmlFor="name"
+                className="block text-sm font-medium leading-6 text-gray-900"
+              >
+                NIP
+              </label>
+              <div className="mt-2">
+                <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                  <input
+                    type="text"
+                    name="external_id"
+                    id="external_id"
+                    autoComplete="off"
+                    className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                    placeholder="NIP"
+                    value={teacherData.external_id}
+                    onChange={({ target }) => handleChangeTextTeacher(target)}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="mt-6 mb-8">
+              <label
+                htmlFor="name"
+                className="block text-sm font-medium leading-6 text-gray-900"
+              >
+                Name
+              </label>
+              <div className="mt-2">
+                <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                  <input
+                    type="text"
+                    name="full_name"
+                    id="full_name"
+                    autoComplete="off"
+                    className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                    placeholder="Full Name"
+                    value={teacherData.full_name}
+                    onChange={({ target }) => handleChangeTextTeacher(target)}
+                  />
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-        <div className="mt-6 mb-8">
-          <label
-            htmlFor="name"
-            className="block text-sm font-medium leading-6 text-gray-900"
-          >
-            Name
-          </label>
-          <div className="mt-2">
-            <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-              <input
-                type="text"
-                name="full_name"
-                id="full_name"
-                autoComplete="off"
-                className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                placeholder="Full Name"
-                value={teacherData.full_name}
-                onChange={({ target }) => handleChangeTextTeacher(target)}
-              />
+          <div className="flex flex-col">
+            <div className="mt-6 mb-0">
+              <label
+                htmlFor="name"
+                className="block text-sm font-medium leading-6 text-gray-900"
+              >
+                Username
+              </label>
+              <div className="mt-2">
+                <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                  <input
+                    type="text"
+                    name="username"
+                    id="username"
+                    autoComplete="off"
+                    className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                    placeholder="Username"
+                    value={teacherData.username}
+                    onChange={({ target }) => handleChangeTextTeacher(target)}
+                  />
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-        <div className="mt-6 mb-8">
-          <label
-            htmlFor="name"
-            className="block text-sm font-medium leading-6 text-gray-900"
-          >
-            Username
-          </label>
-          <div className="mt-2">
-            <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-              <input
-                type="text"
-                name="username"
-                id="username"
-                autoComplete="off"
-                className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                placeholder="Username"
-                value={teacherData.username}
-                onChange={({ target }) => handleChangeTextTeacher(target)}
-              />
-            </div>
-          </div>
-        </div>
-        <div className="mt-6 mb-8">
-          <label
-            htmlFor="name"
-            className="block text-sm font-medium leading-6 text-gray-900"
-          >
-            Password
-          </label>
-          <div className="mt-2">
-            <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-              <input
-                type="password"
-                name="password"
-                id="password"
-                autoComplete="off"
-                className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                placeholder="Password"
-                value={teacherData.password}
-                onChange={({ target }) => handleChangeTextTeacher(target)}
-              />
+            <div className="mt-6 mb-8">
+              <label
+                htmlFor="name"
+                className="block text-sm font-medium leading-6 text-gray-900"
+              >
+                Password
+                <span className="text-xs block">
+                  (No need to fill in, if you remember the password)
+                </span>
+              </label>
+              <div className="mt-2">
+                <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                  <input
+                    type="password"
+                    name="password"
+                    id="password"
+                    autoComplete="off"
+                    className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                    placeholder="Password"
+                    value={teacherData.password}
+                    onChange={({ target }) => handleChangeTextTeacher(target)}
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </div>

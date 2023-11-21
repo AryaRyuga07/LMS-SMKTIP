@@ -100,9 +100,8 @@ const Subject = () => {
     axios
       .post("http://localhost:8000/api/subject/data/add", { name })
       .then((res) => {
-        alert("Insert Success");
         setOpenInsertSubject(false);
-        window.location.reload(true);
+        getSubject();
       })
       .catch((err) => {
         setSubject({ message: "Insert failed" });
@@ -113,9 +112,8 @@ const Subject = () => {
     axios
       .post("http://localhost:8000/api/subject/delete/" + id)
       .then((res) => {
-        alert("Delete Success");
         setOpenDeleteSubject(false);
-        window.location.reload(true);
+        getSubject();
       })
       .catch((err) => {
         setSubject({ message: "get data failed" });
@@ -127,9 +125,8 @@ const Subject = () => {
     axios
       .post("http://localhost:8000/api/subject/update/" + id, { name })
       .then((res) => {
-        alert("Update Success");
         setOpenUpdateSubject(false);
-        window.location.reload(true);
+        getSubject();
       })
       .catch((err) => {
         setSubject({ message: "Update failed" });
@@ -146,6 +143,17 @@ const Subject = () => {
         setSubject({ message: "get data failed" });
       });
   }, []);
+
+  const getSubject = () => {
+    axios
+      .post("http://localhost:8000/api/subject")
+      .then((res) => {
+        setSubject(res.data);
+      })
+      .catch((err) => {
+        setSubject({ message: "get data failed" });
+      });
+  }
 
   const childrenInsertSubject = (
     <div className="text-center w-64 h-auto">

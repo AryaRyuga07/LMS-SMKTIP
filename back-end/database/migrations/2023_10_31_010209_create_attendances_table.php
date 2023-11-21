@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('attendances', function (Blueprint $table) {
             $table->id();
             $table->foreignID('classroom_id')->references('id')->on('classrooms')->cascadeOnDelete();
+            $table->foreignID('subject_id')->references('id')->on('subjects')->cascadeOnDelete();
             $table->foreignID('teacher_id')->references('user_id')->on('teachers')->cascadeOnDelete();
             
 			$table->string('title');

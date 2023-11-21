@@ -4,7 +4,7 @@ import Dashboard from "../../../../component/Dashboard/Dashboard";
 const TeacherDashboard = () => {
   return (
     <div className="max-w-screen max-h-screen flex">
-      <TeacherSidebar />
+      <TeacherSidebar createClass="hidden" />
       <Dashboard />
     </div>
   );

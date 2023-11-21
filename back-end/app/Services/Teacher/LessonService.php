@@ -18,10 +18,8 @@ class LessonService{
 
 	use SingletonTrait;
 
-	public function create(string $title, string $description, ?UploadedFile $file, int $teacherId, Subject|int $subject, Classroom|int $classroom, Carbon $startsAt, Carbon $endsAt) : Lesson{
-		if($startsAt->greaterThan($endsAt)) {
-			throw new \InvalidArgumentException("starts_at must after ends_at");
-		}
+	public function create(string $title, string $description, ?UploadedFile $file, int $teacherId, Subject|int $subject, Classroom|int $classroom)
+	{
 		$Lesson = new Lesson();
 		$Lesson->teacher_id = $teacherId;
 		$Lesson->subject_id = $subject instanceof Subject ? $subject->id : $subject;
@@ -33,14 +31,12 @@ class LessonService{
 			$file->move(public_path('images/student'), $fileName = Str::random(16) . '.' . $file->extension());
 			$Lesson->content = $fileName;
 		}
-
-		$Lesson->starts_at = $startsAt;
-		$Lesson->ends_at = $endsAt;
 		$Lesson->save();
 		return $Lesson;
 	}
 
-	public function update(Lesson|int $Lesson, string $title, string $description, Teacher|int $teacher, Subject|int $subject, Classroom|int $classroom, Carbon $startsAt, Carbon $endsAt) {
+	public function update(Lesson|int $Lesson, string $title, string $description, Teacher|int $teacher, Subject|int $subject, Classroom|int $classroom) 
+	{
 		Lesson::query()->find($Lesson instanceof Lesson ? $Lesson->id : $Lesson)
 			->update([
 				'teacher_id' => $teacher instanceof Teacher ? $teacher->id : $teacher,
@@ -48,8 +44,6 @@ class LessonService{
                 'classroom_id' => $classroom instanceof Classroom ? $classroom->id : $classroom,
 				'title' => $title,
 				'description' => $description,
-				'starts_at' => $startsAt,
-				'ends_at' => $endsAt
 			]);
 	}
 }

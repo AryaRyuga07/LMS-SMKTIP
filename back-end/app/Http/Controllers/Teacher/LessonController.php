@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Teacher;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -22,49 +22,45 @@ class LessonController extends Controller
     }
 
     public function createLesson(Request $request) {
-        $request->validate([
+		$request->validate([
 			'subject_id' => 'required',
 			'classroom_id' => 'required',
 			'title' => 'required|string|regex:/^[a-zA-Z\s]*$/',
-			'content' => 'nullable|mimes:png,jpg,',
+			'content' => 'nullable',
 			'description' => 'required|string|regex:/^[a-zA-Z\s]*$/',
-			'starts_at' => 'required|date_format:m/d/Y H:i',
-			'ends_at' => 'required|date_format:m/d/Y H:i',
+			// 'starts_at' => 'required|date_format:m/d/Y H:i',
+			// 'ends_at' => 'required|date_format:m/d/Y H:i',
 		]);
 
         LessonService::getInstance()->create(
-			$request->post('title'),
-			$request->post('description'),
-            $request->file('file'),
-            $request->user()->getUserId(),
-			(int) $request->post('subject_id'),
-			(int) $request->post('classroom_id'),
-			Carbon::createFromFormat('m/d/Y H:i', $request->post('start_at')),
-			Carbon::createFromFormat('m/d/Y H:i', $request->post('end_at')),
+			$request->title,
+			$request->description,
+            $request->file('content'),
+            $request->teacher_id,
+			(int) $request->subject_id,
+			(int) $request->classroom_id,
+			// Carbon::createFromFormat('m/d/Y H:i', $request->post('start_at')),
+			// Carbon::createFromFormat('m/d/Y H:i', $request->post('end_at')),
 		);
 		return response()->json(['message' => 'Create Data Success']);
 	}
 
-    public function updateLesson(Lesson $Lesson, Request $request) {
+    public function updateLesson(Request $request) {
 		$request->validate([
 			'subject_id' => 'required',
 			'classroom_id' => 'required',
 			'title' => 'required|string|regex:/^[a-zA-Z\s]*$/',
 			'description' => 'required|string|regex:/^[a-zA-Z\s]*$/',
-			'starts_at' => 'required|date_format:m/d/Y H:i',
-			'ends_at' => 'required|date_format:m/d/Y H:i',
-			'teacher_id' => 'required',
+			// 'content' => 'nullable',
 		]);
 
 		LessonService::getInstance()->update(
-			$Lesson,
-			$request->post('title'),
-			$request->post('description'),
-			$request->user()->getUserId(),
-			(int) $request->post('subject_id'),
-			(int) $request->post('classroom_id'),
-			Carbon::createFromFormat('m/d/Y H:i', $request->post('start_at')),
-			Carbon::createFromFormat('m/d/Y H:i', $request->post('end_at'))
+			$request->id,
+			$request->title,
+			$request->description,
+			(int) $request->teacher_id,
+			(int) $request->subject_id,
+			(int) $request->classroom_id,
 		);
 		return response()->json(['message' => 'Update Data Success']);
 	}

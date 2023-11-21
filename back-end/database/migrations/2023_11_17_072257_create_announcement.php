@@ -13,10 +13,12 @@ return new class extends Migration
     {
         Schema::create('announcements', function (Blueprint $table) {
             $table->id();
+            $table->foreignID('teacher_id')->references('user_id')->on('teachers')->cascadeOnDelete();
+            $table->foreignID('subject_id')->references('id')->on('subjects')->cascadeOnDelete();
+            // $table->foreignID('classroom_id')->references('id')->on('classrooms')->cascadeOnDelete();
+
 			$table->string('title');
-			$table->text('description');
-            $table->dateTime('start_at');
-            $table->dateTime('end_at');
+			$table->string('description');
 			$table->timestamps();
         });
     }
@@ -26,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('announcement');
     }
 };

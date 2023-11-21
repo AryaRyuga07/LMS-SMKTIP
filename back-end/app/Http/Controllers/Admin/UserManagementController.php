@@ -15,6 +15,11 @@ use function back;
 class UserManagementController extends Controller
 {
 
+	public function AdminAll()
+	{
+		return User::where('role', '=' , 'admin')->get();
+	}
+
 	public function TeacherAll(Request $request)
 	{
 		$id = $request->id;
@@ -45,7 +50,19 @@ class UserManagementController extends Controller
 		if ($id == null) {
 			return Student::all();
 		} else {
-			return Student::query()->find($request->id);
+			$user = User::query()->find($request->id);
+			$student = Student::where('user_id', '=' , $request->id)->get();
+
+			$data = [
+				'user' => $user,
+				'students' => $student,
+				// 'username' => $user->username,
+				// 'password' => $user->password,
+				// 'external_id' => $teacher->external_id,
+				// 'full_name' => $teacher->full_name,
+			];
+
+			return $data;
 		}
 	}
 
@@ -65,8 +82,8 @@ class UserManagementController extends Controller
 
 	public function deleteAdmin(User $user, Request $request)
 	{
-		$user->user()->delete();
-		return back();
+		User::query()->find($request->id)->delete();
+		return response()->json(['message' => 'Delete Data Success']);
 	}
 
 	public function updateStudent(Student $student, Request $request)
@@ -76,9 +93,10 @@ class UserManagementController extends Controller
 			'password' => 'nullable',
 			'external_id' => 'required',
 			'full_name' => 'required|regex:/^[a-zA-Z\s]*$/',
-			'classroom_id' => 'required|exists:classroom,id',
+			'classroom_id' => 'required',
 			// 'major_id' => 'required|exists:majors,id'
 		]);
+		
 
 		UserCreationService::getInstance()->updateStudent(
 			$student->user_id,

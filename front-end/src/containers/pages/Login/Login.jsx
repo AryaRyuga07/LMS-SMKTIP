@@ -38,15 +38,17 @@ const Login = () => {
           localStorage.setItem("user-info", res.data.name);
           localStorage.setItem("role", res.data.role);
           localStorage.setItem("user-id", res.data.id);
-        } else {
+        } else if(res.data.role == "student"){
           navigate("/");
           localStorage.setItem("user-info", res.data.name);
           localStorage.setItem("role", res.data.role);
           localStorage.setItem("user-id", res.data.id);
+        } else {
+          setData({ username: "", password: "", message: res.data.message });
         }
       })
       .catch((err) => {
-        setData({ message: "login failed" });
+        setData({ message: "login error" });
       });
   };
 
@@ -61,15 +63,17 @@ const Login = () => {
             name="username"
             placeholder="Username"
             onChange={({ target }) => handleChangeText(target)}
+            value={data.username}
+            autoComplete="off"
           />
-          <Password onChange={({ target }) => handleChangeText(target)} />
+          <Password value={data.password} onChange={({ target }) => handleChangeText(target)} />
           <button
             className="bg-blue-700 hover:bg-blue-300 transition duration-300 text-xl font-bold py-2 w-56 mt-5 rounded-md mb-5"
             onClick={handleLoginSubmit}
           >
             Login
           </button>
-          <p>{data.message}</p>
+          <p className="text-red-700 font-bold text-xl">{data.message}</p>
         </div>
       </div>
     </>

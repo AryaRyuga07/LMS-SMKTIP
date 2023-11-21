@@ -9,6 +9,7 @@ import Modal from "../../Modal/Modal";
 const User = () => {
   // Student
   const [classroomData, setClassroomData] = useState([]);
+  const [classroomId, setClassroomId] = useState("");
   const [student, setStudent] = useState([]);
   const [studentData, setStudentData] = useState({
     external_id: "",
@@ -48,7 +49,6 @@ const User = () => {
     axios
       .post("http://localhost:8000/api/student/" + id)
       .then((res) => {
-        console.log(res.data);
         setStudentData({
           external_id: res.data.students[0].external_id,
           full_name: res.data.students[0].full_name,
@@ -151,13 +151,19 @@ const User = () => {
       });
   }, []);
 
+  // const ClassroomMapping = (data) => {
+  //   return data.map((item, index) => {
+  //     return item.id;
+  //   });
+  // };
+
   const renderOption = (data) => {
     return data.map((item, index) => {
       return (
         <option
           key={index}
           value={item.id}
-          selected={classroomData[0].id === classroomData.classroom_id}
+          selected={false}
         >
           {item.name}
         </option>
@@ -166,8 +172,8 @@ const User = () => {
   };
 
   const changeDropDown = (e) => {
-    setClassroomData({
-      ...classroomData,
+    setStudentData({
+      ...studentData,
       [e.name]: e.value,
     });
   };
@@ -199,7 +205,7 @@ const User = () => {
                 htmlFor="external_id"
                 className="block text-sm font-medium leading-6 text-gray-900"
               >
-                NIP
+                NISN
               </label>
               <div className="mt-2">
                 <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
@@ -209,8 +215,8 @@ const User = () => {
                     id="external_id"
                     autoComplete="off"
                     className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                    placeholder="NIP"
-                    // value={StudentData.external_id}
+                    placeholder="NISN"
+                    value={studentData.external_id}
                     onChange={({ target }) => handleChangeTextStudent(target)}
                   />
                 </div>
@@ -232,7 +238,7 @@ const User = () => {
                     autoComplete="off"
                     className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                     placeholder="Full Name"
-                    // value={StudentData.full_name}
+                    value={studentData.full_name}
                     onChange={({ target }) => handleChangeTextStudent(target)}
                   />
                 </div>
@@ -252,7 +258,6 @@ const User = () => {
                   autoComplete="off"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
                   onChange={({ target }) => changeDropDown(target)}
-                  value={classroomData.id == classroomData.classroom_id}
                 >
                   <option>-- Choose Classroom --</option>
                   {renderOption(classroomData)}
@@ -277,7 +282,7 @@ const User = () => {
                     autoComplete="off"
                     className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                     placeholder="Username"
-                    // value={StudentData.username}
+                    value={studentData.username}
                     onChange={({ target }) => handleChangeTextStudent(target)}
                   />
                 </div>
@@ -299,7 +304,7 @@ const User = () => {
                     autoComplete="off"
                     className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                     placeholder="Password"
-                    // value={StudentData.password}
+                    value={studentData.password}
                     onChange={({ target }) => handleChangeTextStudent(target)}
                   />
                 </div>
@@ -326,7 +331,7 @@ const User = () => {
   );
 
   const childrenUpdateStudent = (
-    <div className="text-center w-64 h-auto">
+    <div className="text-center w-96 h-auto">
       <div className="w-20 h-20 mx-auto flex justify-center items-center">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -345,112 +350,123 @@ const User = () => {
       </div>
       <div className="mx-auto my-4 w-48">
         <h3 className="text-lg font-black text-gray-800">Update Form</h3>
-        <div className="mt-6 mb-8">
-          <label
-            htmlFor="name"
-            className="block text-sm font-medium leading-6 text-gray-900"
-          >
-            NIP
-          </label>
-          <div className="mt-2">
-            <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-              <input
-                type="text"
-                name="external_id"
-                id="external_id"
-                autoComplete="off"
-                className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                placeholder="NIP"
-                value={studentData.external_id}
-                onChange={({ target }) => handleChangeTextStudent(target)}
-              />
+        <div className="flex justify-center">
+          <div className="flex flex-col mr-10">
+            <div className="mt-6 mb-8">
+              <label
+                htmlFor="name"
+                className="block text-sm font-medium leading-6 text-gray-900"
+              >
+                NISN
+              </label>
+              <div className="mt-2">
+                <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                  <input
+                    type="text"
+                    name="external_id"
+                    id="external_id"
+                    autoComplete="off"
+                    className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                    placeholder="NISN"
+                    value={studentData.external_id}
+                    onChange={({ target }) => handleChangeTextStudent(target)}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="mt-6 mb-8">
+              <label
+                htmlFor="name"
+                className="block text-sm font-medium leading-6 text-gray-900"
+              >
+                Name
+              </label>
+              <div className="mt-2">
+                <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                  <input
+                    type="text"
+                    name="full_name"
+                    id="full_name"
+                    autoComplete="off"
+                    className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                    placeholder="Full Name"
+                    value={studentData.full_name}
+                    onChange={({ target }) => handleChangeTextStudent(target)}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="sm:col-span-3 mt-6 mb-8">
+              <label
+                htmlFor="major"
+                className="block text-sm font-medium leading-6 text-gray-900"
+              >
+                Classroom
+              </label>
+              <div className="mt-2">
+                <select
+                  id="classroom_id"
+                  name="classroom_id"
+                  autoComplete="off"
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
+                  onChange={({ target }) => changeDropDown(target)}
+                  // value={
+                  //   ClassroomMapping(classroomData) == studentData.classroom_id
+                  // }
+                >
+                  <option>-- Choose Classroom --</option>
+                  {renderOption(classroomData)}
+                </select>
+              </div>
             </div>
           </div>
-        </div>
-        <div className="mt-6 mb-8">
-          <label
-            htmlFor="name"
-            className="block text-sm font-medium leading-6 text-gray-900"
-          >
-            Name
-          </label>
-          <div className="mt-2">
-            <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-              <input
-                type="text"
-                name="full_name"
-                id="full_name"
-                autoComplete="off"
-                className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                placeholder="Full Name"
-                value={studentData.full_name}
-                onChange={({ target }) => handleChangeTextStudent(target)}
-              />
+          <div className="flex flex-col">
+            <div className="mt-6">
+              <label
+                htmlFor="name"
+                className="block text-sm font-medium leading-6 text-gray-900"
+              >
+                Username
+              </label>
+              <div className="mt-2">
+                <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                  <input
+                    type="text"
+                    name="username"
+                    id="username"
+                    autoComplete="off"
+                    className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                    placeholder="Username"
+                    value={studentData.username}
+                    onChange={({ target }) => handleChangeTextStudent(target)}
+                  />
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-        <div className="sm:col-span-3 mt-6 mb-8">
-          <label
-            htmlFor="major"
-            className="block text-sm font-medium leading-6 text-gray-900"
-          >
-            Classroom
-          </label>
-          <div className="mt-2">
-            <select
-              id="classroom_id"
-              name="classroom_id"
-              autoComplete="off"
-              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
-              onChange={({ target }) => changeDropDown(target)}
-              value={setClassroomData.id == classroomData.classroom_id}
-            >
-              <option>-- Choose Classroom --</option>
-              {renderOption(classroomData)}
-            </select>
-          </div>
-        </div>
-        <div className="mt-6 mb-8">
-          <label
-            htmlFor="name"
-            className="block text-sm font-medium leading-6 text-gray-900"
-          >
-            Username
-          </label>
-          <div className="mt-2">
-            <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-              <input
-                type="text"
-                name="username"
-                id="username"
-                autoComplete="off"
-                className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                placeholder="Username"
-                value={studentData.username}
-                onChange={({ target }) => handleChangeTextStudent(target)}
-              />
-            </div>
-          </div>
-        </div>
-        <div className="mt-6 mb-8">
-          <label
-            htmlFor="name"
-            className="block text-sm font-medium leading-6 text-gray-900"
-          >
-            Password
-          </label>
-          <div className="mt-2">
-            <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-              <input
-                type="password"
-                name="password"
-                id="password"
-                autoComplete="off"
-                className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                placeholder="Password"
-                value={studentData.password}
-                onChange={({ target }) => handleChangeTextStudent(target)}
-              />
+            <div className="mt-6 mb-8">
+              <label
+                htmlFor="name"
+                className="block text-sm font-medium leading-6 text-gray-900"
+              >
+                Password
+                <span className="text-xs block">
+                  (No need to fill in, if you remember the password)
+                </span>
+              </label>
+              <div className="mt-2">
+                <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                  <input
+                    type="password"
+                    name="password"
+                    id="password"
+                    autoComplete="off"
+                    className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                    placeholder="Password"
+                    value={studentData.password}
+                    onChange={({ target }) => handleChangeTextStudent(target)}
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </div>

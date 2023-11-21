@@ -15,7 +15,7 @@ const TeacherSidebar = (props) => {
         navigate("/auth/login");
       })
       .catch((err) => {
-        setData({ message: "logout failed" });
+        console.log("logout failed");
       });
   };
 
@@ -45,7 +45,7 @@ const TeacherSidebar = (props) => {
 
   return (
     <div>
-      <div className="w-12 h-screen bg-second flex justify-center drop-shadow-md shadow-slate-700">
+      <div className="w-12 h-screen bg-second flex justify-center drop-shadow-md shadow-slate-700 fixed z-50">
         <ul className="flex flex-col items-center mt-5">
           <li
             className="mb-5 hover:cursor-pointer hover:bg-third p-1 rounded-full hover:rounded hover:p-2 transition ease-in-out duration-500"
@@ -190,7 +190,7 @@ const TeacherSidebar = (props) => {
 
       <div className={props.createClass}>
         <div
-          className="absolute w-32 h-14 right-7 bottom-5 bg-white shadow-2xl shadow-black rounded-full flex items-center hover:bg-slate-500 transition duration-300 hover:cursor-pointer text-blue-700 hover:text-white"
+          className="fixed w-32 h-14 right-7 bottom-5 bg-white shadow-2xl shadow-black rounded-full flex items-center hover:bg-slate-500 transition duration-300 hover:cursor-pointer text-blue-700 hover:text-white z-49"
           onClick={props.onClick}
         >
           <svg

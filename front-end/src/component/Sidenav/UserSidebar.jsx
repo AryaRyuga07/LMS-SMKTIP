@@ -15,7 +15,7 @@ const UserSidebar = () => {
         navigate("/auth/login");
       })
       .catch((err) => {
-        setData({ message: "logout failed" });
+        console.log("logout failed");
       });
   };
 
@@ -27,8 +27,8 @@ const UserSidebar = () => {
     navigate("/home");
   };
 
-  const Presence = () => {
-    navigate("/presence");
+  const Clock = () => {
+    navigate("/history");
   };
 
   const Task = () => {
@@ -41,7 +41,7 @@ const UserSidebar = () => {
 
   return (
     <div>
-      <div className="w-12 h-screen bg-second flex justify-center drop-shadow-md shadow-slate-700 fixed z-50">
+      <div className="w-12 h-screen bg-second flex justify-center drop-shadow-md shadow-slate-700">
         <ul className="flex flex-col items-center mt-5">
           <li
             className="mb-5 hover:cursor-pointer hover:bg-third p-1 rounded-full hover:rounded hover:p-2 transition ease-in-out duration-500"
@@ -64,7 +64,7 @@ const UserSidebar = () => {
           </li>
           <li
             className="mb-5 hover:cursor-pointer hover:bg-third p-1 rounded-full hover:rounded hover:p-2 transition ease-in-out duration-500"
-            onClick={Presence}
+            onClick={Clock}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -77,7 +77,7 @@ const UserSidebar = () => {
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                d="M7.5 14.25v2.25m3-4.5v4.5m3-6.75v6.75m3-9v9M6 20.25h12A2.25 2.25 0 0020.25 18V6A2.25 2.25 0 0018 3.75H6A2.25 2.25 0 003.75 6v12A2.25 2.25 0 006 20.25z"
+                d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"
               />
             </svg>
           </li>

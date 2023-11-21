@@ -25,8 +25,8 @@ class AssignmentService{
 		$Assignment->classroom_id = $classroom instanceof Classroom ? $classroom->id : $classroom;
 		$Assignment->title = $title;
 		$Assignment->description = $description;
-		$Assignment->starts_at = $startsAt;
-		$Assignment->ends_at = $endsAt;
+		$Assignment->start_at = $startsAt;
+		$Assignment->end_at = $endsAt;
 		$Assignment->save();
 		return $Assignment;
 	}

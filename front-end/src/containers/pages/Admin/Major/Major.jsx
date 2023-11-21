@@ -4,6 +4,7 @@ import Card from "../../../../component/Card/Card";
 import Modal from "../../Modal/Modal";
 import axios from "axios";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Major = () => {
   const [major, setMajor] = useState([]);
@@ -12,6 +13,7 @@ const Major = () => {
   const [openUpdate, setOpenUpdate] = useState(false);
   const [openInsert, setOpenInsert] = useState(false);
   const [idMajor, setIdMajor] = useState(0);
+  const navigate = useNavigate();
 
   const handleChangeText = (e) => {
     setMajorName(e.value);
@@ -47,9 +49,8 @@ const Major = () => {
     axios
       .post("http://localhost:8000/api/major/data/add", { name })
       .then((res) => {
-        alert("Insert Success");
         setOpenInsert(false);
-        window.location.reload(true);
+        getMajor();
       })
       .catch((err) => {
         setMajor({ message: "Insert failed" });
@@ -60,9 +61,8 @@ const Major = () => {
     axios
       .post("http://localhost:8000/api/major/delete/" + id)
       .then((res) => {
-        alert("Delete Success");
         setOpenDelete(false);
-        window.location.reload(true);
+        getMajor();
       })
       .catch((err) => {
         setMajor({ message: "get data failed" });
@@ -74,9 +74,8 @@ const Major = () => {
     axios
       .post("http://localhost:8000/api/major/update/" + id, { name })
       .then((res) => {
-        alert("Update Success");
         setOpenUpdate(false);
-        window.location.reload(true);
+        getMajor();
       })
       .catch((err) => {
         setMajor({ message: "Update failed" });
@@ -86,6 +85,17 @@ const Major = () => {
   const clickRow = (row) => {
     const rowId = row.id;
     console.log(rowId);
+  };
+
+  const getMajor = () => {
+    axios
+      .post("http://localhost:8000/api/major")
+      .then((res) => {
+        setMajor(res.data);
+      })
+      .catch((err) => {
+        setMajor({ message: "get data failed" });
+      });
   };
 
   useEffect(() => {

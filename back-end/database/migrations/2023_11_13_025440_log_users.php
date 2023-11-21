@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('log_users', function (Blueprint $table) {
-            $table->id();
+            // $table->id();
 			$table->foreignID('user_id')->references('id')->on('users')->cascadeOnDelete();
 
             $table->string('username');

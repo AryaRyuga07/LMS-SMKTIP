@@ -6,8 +6,15 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Admin\MajorController;
 use App\Http\Controllers\Admin\SubjectController;
 use App\Http\Controllers\Admin\ClassroomController;
+use App\Http\Controllers\Admin\HistoryController;
 use App\Http\Controllers\Admin\UserCreationController;
 use App\Http\Controllers\Admin\UserManagementController;
+use App\Http\Controllers\Admin\ScheduleController;
+use App\Http\Controllers\Teacher\AnnouncementController;
+use App\Http\Controllers\Teacher\AssignmentController;
+use App\Http\Controllers\Teacher\AttendanceController;
+use App\Http\Controllers\Teacher\LessonController;
+use App\Http\Controllers\Teacher\ScheduleTeacherController;
 
 /*
 |--------------------------------------------------------------------------
@@ -56,6 +63,12 @@ Route::prefix('/teacher')->group(function () {
     Route::post('/delete/{id}', [UserManagementController::class, 'deleteTeacher']);
     Route::post('/data/add', [UserCreationController::class, 'createTeacher']);
 });
+Route::prefix('/self')->group(function () {
+    Route::post('/', [UserManagementController::class, 'AdminAll']);
+    Route::post('/{id}', [UserManagementController::class, 'AdminAll']);
+    Route::post('/delete/{id}', [UserManagementController::class, 'deleteAdmin']);
+    Route::post('/data/add', [UserCreationController::class, 'createAdmin']);
+});
 Route::prefix('/student')->group(function () {
     Route::post('/', [UserManagementController::class, 'StudentAll']);
     Route::post('/{id}', [UserManagementController::class, 'StudentAll']);
@@ -63,17 +76,50 @@ Route::prefix('/student')->group(function () {
     Route::post('/delete/{id}', [UserManagementController::class, 'deleteStudent']);
     Route::post('/data/add', [UserCreationController::class, 'createStudent']);
 });
+Route::prefix('/schedule')->group(function () {
+    Route::post('/', [ScheduleController::class, 'DataSchedule']);
+    Route::post('/{id}', [ScheduleController::class, 'DataSchedule']);
+    Route::post('/update/{id}', [ScheduleController::class, 'updateDataSchedule']);
+    Route::post('/delete/{id}', [ScheduleController::class, 'deleteDataSchedule']);
+    Route::post('/data/add', [ScheduleController::class, 'addDataSchedule']);
+});
+Route::prefix('/history')->group(function () {
+    Route::post('/data', [HistoryController::class, 'HistoryData']);
+    Route::post('/log', [HistoryController::class, 'HistoryLog']);
+});
+
+Route::prefix('/teacher-schedule')->group(function () {
+    Route::post('/subject/{id}', [ScheduleTeacherController::class, 'getSubject']);
+    Route::post('/classroom/{id}', [ScheduleTeacherController::class, 'getClassroom']);
+});
+
+
+
 Route::prefix('/attendance')->group(function () {
     Route::post('/', [AttendanceController::class, 'AttendanceAll']);
     Route::post('/{id}', [AttendanceController::class, 'AttendanceAll']);
     Route::post('/update/{id}', [AttendanceController::class, 'updateAttendance']);
     Route::post('/delete/{id}', [AttendanceController::class, 'deleteAttendance']);
-    Route::post('/data/add', [UserCreationController::class, 'createAttendance']);
+    Route::post('/data/add', [AttendanceController::class, 'createAttendance']);
 });
 Route::prefix('/assignment')->group(function () {
     Route::post('/', [AssignmentController::class, 'AssignmentAll']);
     Route::post('/{id}', [AssignmentController::class, 'AssignmentAll']);
     Route::post('/update/{id}', [AssignmentController::class, 'updateAssignment']);
     Route::post('/delete/{id}', [AssignmentController::class, 'deleteAssignment']);
-    Route::post('/data/add', [UserCreationController::class, 'createAssignment']);
+    Route::post('/data/add', [AssignmentController::class, 'createAssignment']);
+});
+Route::prefix('/lesson')->group(function () {
+    Route::post('/', [LessonController::class, 'LessonAll']);
+    Route::post('/{id}', [LessonController::class, 'LessonAll']);
+    Route::post('/update/{id}', [LessonController::class, 'updateLesson']);
+    Route::post('/delete/{id}', [LessonController::class, 'deleteLesson']);
+    Route::post('/data/add', [LessonController::class, 'createLesson']);
+});
+Route::prefix('/announcement')->group(function () {
+    Route::post('/', [AnnouncementController::class, 'AnnouncementAll']);
+    Route::post('/{id}', [AnnouncementController::class, 'AnnouncementAll']);
+    Route::post('/update/{id}', [AnnouncementController::class, 'updateAnnouncement']);
+    Route::post('/delete/{id}', [AnnouncementController::class, 'deleteAnnouncement']);
+    Route::post('/data/add', [AnnouncementController::class, 'createAnnouncement']);
 });

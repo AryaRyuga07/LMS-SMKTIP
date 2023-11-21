@@ -39,7 +39,7 @@ const Group = () => {
       .then((res) => {
         setMajor(res.data);
       })
-      .catch((err) => {
+      .catch((err) => {use
         setMajor({ message: "get data failed" });
       });
   };
@@ -188,7 +188,7 @@ const Group = () => {
         <option
           key={index}
           value={item.id}
-          selected={major[0].id === classData.major_id}
+          // {selected={major[0].id === classData.major_id}}
         >
           {item.name}
         </option>

@@ -21,7 +21,7 @@ class UserCreationService
 
 	use SingletonTrait;
 
-	private function create(string $username, string $password, string $role) : User
+	private function create(string $username, string $password, string $role): User
 	{
 		$user = new User();
 		$user->name = $username;
@@ -37,14 +37,14 @@ class UserCreationService
 			'name' => $username,
 			'role' => $role
 		];
-		if($password !== "") {
+		if ($password !== "") {
 			$update['password'] = Hash::make($password);
 		}
 		User::query()->find($user)->update($update);
 		return $user;
 	}
 
-	public function createStudent(string $username, string $password, string $externalID, string $fullName, int $classroom) : void
+	public function createStudent(string $username, string $password, string $externalID, string $fullName, int $classroom): void
 	{
 		$user = $this->create($username, $password, User::ROLE_STUDENT);
 
@@ -64,7 +64,7 @@ class UserCreationService
 		$student->save();
 	}
 
-	public function createTeacher(string $username, string $password, string $externalID, string $fullName) : void
+	public function createTeacher(string $username, string $password, string $externalID, string $fullName): void
 	{
 		$user = $this->create($username, $password, User::ROLE_TEACHER);
 
@@ -79,24 +79,29 @@ class UserCreationService
 		$teacher->save();
 	}
 
-	public function createAdmin(string $username, string $password) : void
+	public function createAdmin(string $username, string $password): void
 	{
 		$this->create($username, $password, User::ROLE_ADMIN);
 	}
 
-	public function updateStudent(string $student, string $username, string $password, string|int $external_id, string $full_name, Classroom|int $classroom) : void
+	public function updateStudent(string $student, string $username, string $password, string|int $external_id, string $full_name, int $classroom): void
 	{
 		$this->update($student, $username, $password, User::ROLE_STUDENT);
 
+		$updateStudent = [
+			'external_id' => $external_id,
+			'full_name' => $full_name,
+		];
+
+		if ($classroom !== "") {
+			$updateStudent['classroom'] = $classroom;
+		}
+
 		Student::query()->find($student)
-			->update([
-				'external_id' => $external_id,
-				'full_name' => $full_name,
-				'classroom_id' => $classroom instanceof Classroom ? $classroom->id : $classroom
-			]);
+			->update($updateStudent);
 	}
 
-	public function updateTeacher(string $teacher, string $username, string $password, string|int $external_id, string $full_name) : void
+	public function updateTeacher(string $teacher, string $username, string $password, string|int $external_id, string $full_name): void
 	{
 		$this->update($teacher, $username, $password, User::ROLE_TEACHER);
 

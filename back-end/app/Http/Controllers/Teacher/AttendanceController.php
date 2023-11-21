@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Teacher;
 
 use App\Http\Controllers\Controller;
 use App\Models\Attendance;
@@ -25,40 +25,40 @@ class AttendanceController extends Controller
 		$request->validate([
 			'classroom_id' => 'required',
 			'title' => 'required|string|regex:/^[a-zA-Z\s]*$/',
-			'description' => 'required|string|regex:/^[a-zA-Z\s]*$/',
-			'starts_at' => 'required|date_format:m/d/Y H:i',
-			'ends_at' => 'required|date_format:m/d/Y H:i',
+			'description' => 'required|string|regex:/^[a-zA-Z0-9\s]*$/',
+			'start_at' => 'required|date_format:m/d/Y H:i',
+			'end_at' => 'required|date_format:m/d/Y H:i',
 		]);
 
 		AttendanceService::getInstance()->create(
-			$request->post('title'),
-			$request->post('description'),
-            $request->user()->getUserId(),
-			(int) $request->post('classroom_id'),
-			Carbon::createFromFormat('m/d/Y H:i', $request->post('start_at')),
-			Carbon::createFromFormat('m/d/Y H:i', $request->post('end_at')),
+			$request->title,
+			$request->description,
+            (int) $request->teacher_id,
+			(int) $request->classroom_id,
+			Carbon::createFromFormat('m/d/Y H:i', $request->start_at),
+			Carbon::createFromFormat('m/d/Y H:i', $request->end_at),
 		);
 		return response()->json(['message' => 'Create Data Success']);
 	}
 
-	public function updateAttendance(Attendance $Attendance, Request $request) {
+	public function updateAttendance(Request $request) {
 		$request->validate([
 			'classroom_id' => 'required',
 			'title' => 'required|string|regex:/^[a-zA-Z\s]*$/',
-			'description' => 'required|string|regex:/^[a-zA-Z\s]*$/',
-			'starts_at' => 'required|date_format:m/d/Y H:i',
-			'ends_at' => 'required|date_format:m/d/Y H:i',
+			'description' => 'required|string|regex:/^[a-zA-Z0-9\s]*$/',
+			'start_at' => 'required|date_format:m/d/Y H:i',
+			'end_at' => 'required|date_format:m/d/Y H:i',
 			'teacher_id' => 'required',
 		]);
 
 		AttendanceService::getInstance()->update(
-			$Attendance,
-			$request->post('title'),
-			$request->post('description'),
-			$request->user()->getUserId(),
-			(int) $request->post('classroom_id'),
-			Carbon::createFromFormat('m/d/Y H:i', $request->post('start_at')),
-			Carbon::createFromFormat('m/d/Y H:i', $request->post('end_at'))
+			$request->id,
+			$request->title,
+			$request->description,
+            (int) $request->teacher_id,
+			(int) $request->classroom_id,
+			Carbon::createFromFormat('m/d/Y H:i', $request->start_at),
+			Carbon::createFromFormat('m/d/Y H:i', $request->end_at),
 		);
 		return response()->json(['message' => 'Update Data Success']);
 	}

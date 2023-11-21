@@ -19,7 +19,7 @@ return new class extends Migration
 
             $table->string('title');
 			$table->string('description');
-            // $table->string('image')->nullable();
+            $table->string('image')->nullable();
             $table->dateTime('start_at');
             $table->dateTime('end_at');
 			$table->timestamps();
