@@ -1,6 +1,9 @@
+import { useNavigate } from "react-router-dom";
+
 const NotFound = () => {
+  const navigate = useNavigate();
   const handleBack = () => {
-    window.history.back();
+    navigate(-1);
   };
 
   return (

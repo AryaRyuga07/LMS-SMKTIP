@@ -24,6 +24,7 @@ class AnnouncementService
 		foreach ($classroom as $data) {
 			$Detail = new DetailClassroom();
 			$Detail->main_id = $id;
+			$Detail->table = 'Announcement';
 			$Detail->class_id = $data;
 			$Detail->save();
 		}

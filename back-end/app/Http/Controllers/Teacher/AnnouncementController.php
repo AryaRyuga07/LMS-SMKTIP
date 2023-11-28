@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Teacher;
 
 use App\Http\Controllers\Controller;
 use App\Models\Announcement;
+use App\Models\DetailClassroom;
 use App\Services\Teacher\AnnouncementService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -15,7 +16,7 @@ class AnnouncementController extends Controller
         $id = $request->id;
 
 		if ($id == null) {
-			return Announcement::all();
+			return Announcement::query()->where('teacher_id', $request->user)->get();
 		} else {
 			$announcement = DB::table('announcements')
                 ->where('announcements.id', $request->id)
@@ -80,7 +81,8 @@ class AnnouncementController extends Controller
 	}
 
 	public function deleteAnnouncement(Request $request) {
-		Announcement::query()->find($request->id)->delete();;
+		Announcement::query()->find($request->id)->delete();
+		DB::table('detail_classroom')->where('main_id', $request->id)->where('data', 'Announcement')->delete();
 		return response()->json(['message' => 'Delete Data Success']);
 	}
 }

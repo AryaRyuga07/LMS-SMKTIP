@@ -7,6 +7,9 @@ import Password from "../../../component/Password/Password";
 const Login = () => {
   let role = localStorage.getItem("role");
   useEffect(() => {
+    if (role == "student"){
+      navigate(`/home`);
+    }
     if (localStorage.getItem("user-info") != null) {
       navigate(`/${role}/dashboard`);
     }
@@ -56,7 +59,7 @@ const Login = () => {
     <>
       <div className="w-screen h-screen flex justify-center items-center">
         <div className="bg-green-500 w-[35rem] h-96 flex flex-col justify-center items-center rounded-br-[23rem] rounded-tl-[25rem]">
-          <h1 className="text-3xl font-bold mb-5">Login Page</h1>
+          <h1 className="text-3xl font-bold mb-5">Login Pages</h1>
           <input
             className="h-12 w-[14.5rem] border rounded-md mb-5 px-3"
             type="text"

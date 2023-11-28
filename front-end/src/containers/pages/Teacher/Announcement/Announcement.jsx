@@ -20,22 +20,11 @@ const Announcement = () => {
   const [manageModal, setManageModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
   const [checkedItems, setCheckedItems] = useState([]);
-  const [itemClass, setItemClass] = useState("absolute");
-
-  const columns = [
-    {
-      selector: (row) => row.title,
-      sortable: true,
-    },
-    {
-      selector: (row) => row.description,
-      sortable: true,
-    },
-  ];
 
   useEffect(() => {
+    const user = localStorage.getItem("user-id");
     axios
-      .post("http://localhost:8000/api/announcement")
+      .post("http://localhost:8000/api/announcement", { user })
       .then((res) => {
         setAnnouncementData(res.data);
       })
@@ -45,8 +34,9 @@ const Announcement = () => {
   }, []);
 
   const getAnnouncement = () => {
+    const user = localStorage.getItem("user-id");
     axios
-      .post("http://localhost:8000/api/announcement")
+      .post("http://localhost:8000/api/announcement", { user })
       .then((res) => {
         setAnnouncementData(res.data);
       })
@@ -125,10 +115,7 @@ const Announcement = () => {
           title: res.data.title,
           description: res.data.description,
         });
-        setClassroom([
-          ...classroom,
-          res.data.id_classroom,
-        ]);
+        setClassroom([...classroom, res.data.id_classroom]);
         setCheckedItems([]);
         getSubject();
         setInsertModal(true);
@@ -141,7 +128,7 @@ const Announcement = () => {
   const deleteData = (id) => {
     setDeleteModal(true);
     setIdAnnouncement(id);
-  }
+  };
 
   const renderCheckbox = (data) => {
     return data.map((item, index) => {
@@ -249,7 +236,7 @@ const Announcement = () => {
       .catch((err) => {
         setAnnouncement({ message: "get data failed" });
       });
-  }
+  };
 
   const AnnInputChildren = (
     <div className="w-[95vw] h-[80vh]">
@@ -507,6 +494,19 @@ const Announcement = () => {
     </div>
   );
 
+  const cardNoData = () => {
+    return (
+      <div className="w-[94vw] h-auto border-2 border-second rounded-lg mt-6 flex py-3 justify-between items-center hover:cursor-pointer hover:bg-slate-200 transition duration-300 opacity-100">
+        <div className="flex">
+          <div className="bg-stone-400 w-14 h-14 ml-3 rounded-lg flex justify-center items-center"></div>
+          <div className="ml-5 flex items-center">
+            <p className="text-lg text-slate-700 mb-1 font-bold">No Data</p>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="max-w-[95vw] pb-6 pr-5 flex">
       <TeacherSidebar onClick={createData} />
@@ -514,7 +514,9 @@ const Announcement = () => {
         <div className="w-[94vw] h-28 bg-third rounded-t-lg mt-4 pl-5 pt-5">
           <p className="font-bold text-3xl text-white">Announcement List</p>
         </div>
-        {renderCard(announcementData)}
+        {announcementData.length > 0
+          ? renderCard(announcementData)
+          : cardNoData()}
       </div>
       <div className="w-screen">
         <Modal

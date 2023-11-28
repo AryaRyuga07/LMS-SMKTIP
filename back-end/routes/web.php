@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\FileController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,4 +16,15 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::get('/lesson/{imageName}', function ($imageName) {
+    return "test";
+    $path = public_path('lessons/file/' . $imageName);
+
+    if (file_exists($path)) {
+        return response()->file($path);
+    } else {
+        abort(404); // Gambar tidak ditemukan
+    }
 });

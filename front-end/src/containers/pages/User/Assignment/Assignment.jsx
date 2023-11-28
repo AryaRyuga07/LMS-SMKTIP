@@ -7,7 +7,6 @@ const Assignment = () => {
   return (
     <div className="max-w-screen max-h-screen flex overflow-hidden">
       <UserSidebar />
-      <Contact />
       <AssignmentSub />
     </div>
   );

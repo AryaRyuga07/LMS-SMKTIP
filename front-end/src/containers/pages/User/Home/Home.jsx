@@ -8,7 +8,7 @@ const Home = () => {
     <div className="max-w-screen max-h-screen flex overflow-hidden">
       <UserSidebar />
       <Contact />
-      <Chat />
+      {/* <Chat /> */}
     </div>
   );
 };

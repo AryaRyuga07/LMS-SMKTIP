@@ -10,11 +10,16 @@ use App\Http\Controllers\Admin\HistoryController;
 use App\Http\Controllers\Admin\UserCreationController;
 use App\Http\Controllers\Admin\UserManagementController;
 use App\Http\Controllers\Admin\ScheduleController;
+use App\Http\Controllers\Student\HomeController;
+use App\Http\Controllers\Student\SubmissionController;
 use App\Http\Controllers\Teacher\AnnouncementController;
 use App\Http\Controllers\Teacher\AssignmentController;
 use App\Http\Controllers\Teacher\AttendanceController;
+use App\Http\Controllers\Teacher\GradeController;
+use App\Http\Controllers\Teacher\GradesAllController;
 use App\Http\Controllers\Teacher\LessonController;
 use App\Http\Controllers\Teacher\ScheduleTeacherController;
+use App\Http\Controllers\Teacher\SubmittedResult;
 
 /*
 |--------------------------------------------------------------------------
@@ -87,7 +92,6 @@ Route::prefix('/history')->group(function () {
     Route::post('/data', [HistoryController::class, 'HistoryData']);
     Route::post('/log', [HistoryController::class, 'HistoryLog']);
 });
-
 Route::prefix('/teacher-schedule')->group(function () {
     Route::post('/subject/{id}', [ScheduleTeacherController::class, 'getSubject']);
     Route::post('/classroom/{id}', [ScheduleTeacherController::class, 'getClassroom']);
@@ -102,12 +106,20 @@ Route::prefix('/attendance')->group(function () {
     Route::post('/delete/{id}', [AttendanceController::class, 'deleteAttendance']);
     Route::post('/data/add', [AttendanceController::class, 'createAttendance']);
 });
+Route::prefix('/result')->group(function () {
+    Route::post('/attendance/{id}', [SubmittedResult::class, 'getAttendance']);
+    Route::post('/assignment/{id}', [SubmittedResult::class, 'getAssignment']);
+});
 Route::prefix('/assignment')->group(function () {
     Route::post('/', [AssignmentController::class, 'AssignmentAll']);
     Route::post('/{id}', [AssignmentController::class, 'AssignmentAll']);
     Route::post('/update/{id}', [AssignmentController::class, 'updateAssignment']);
     Route::post('/delete/{id}', [AssignmentController::class, 'deleteAssignment']);
     Route::post('/data/add', [AssignmentController::class, 'createAssignment']);
+});
+Route::prefix('/grade')->group(function () {
+    Route::post('/', [GradeController::class, 'grade']);
+    Route::post('/student', [GradesAllController::class, 'getGrades']);
 });
 Route::prefix('/lesson')->group(function () {
     Route::post('/', [LessonController::class, 'LessonAll']);
@@ -122,4 +134,25 @@ Route::prefix('/announcement')->group(function () {
     Route::post('/update/{id}', [AnnouncementController::class, 'updateAnnouncement']);
     Route::post('/delete/{id}', [AnnouncementController::class, 'deleteAnnouncement']);
     Route::post('/data/add', [AnnouncementController::class, 'createAnnouncement']);
+});
+
+Route::prefix('/home')->group(function () {
+    Route::post('/{id}', [HomeController::class, 'home']);
+    Route::post('announcement/{id}', [HomeController::class, 'AnnouncementPage']);
+    Route::post('assignment/{id}', [HomeController::class, 'AssignmentPage']);
+    Route::post('attendance/{id}', [HomeController::class, 'AttendancePage']);
+    Route::post('lesson/{id}', [HomeController::class, 'LessonPage']);
+    Route::post('announcements/{id}', [HomeController::class, 'Announcement']);
+    Route::post('assignments/{id}', [HomeController::class, 'Assignment']);
+    Route::post('attendances/{id}', [HomeController::class, 'Attendance']);
+    Route::post('lessons/{id}', [HomeController::class, 'Lesson']);
+});
+
+Route::prefix('/submission')->group(function () {
+    Route::post('/assignment', [SubmissionController::class, 'AssignmentSubmission']);
+    Route::post('/attendance', [SubmissionController::class, 'AttendanceSubmission']);
+});
+Route::prefix('/submitted')->group(function () {
+    Route::post('/attendance/{id}', [SubmissionController::class, 'AttendanceSubmitted']);
+    Route::post('/assignment/{id}', [SubmissionController::class, 'AssignmentSubmitted']);
 });

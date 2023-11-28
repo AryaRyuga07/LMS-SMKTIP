@@ -7,16 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Lesson extends Model
 {
+	protected $table = 'lessons';
+
     protected $casts = [
 		'teacher_id' => 'int',
 		'subject_id' => 'int',
-		'classroom_id' => 'int'
 	];
 
 	protected $fillable = [
 		'teacher_id',
 		'subject_id',
-		'classroom_id',
 		'title',
         'description',
         'content',

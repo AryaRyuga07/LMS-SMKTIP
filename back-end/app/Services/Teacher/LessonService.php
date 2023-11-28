@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services\Teacher;
 
 use App\Models\Classroom;
+use App\Models\DetailClassroom;
 use App\Models\Lesson;
 use App\Models\Teacher;
 use App\Models\Subject;
@@ -18,20 +19,35 @@ class LessonService{
 
 	use SingletonTrait;
 
-	public function create(string $title, string $description, ?UploadedFile $file, int $teacherId, Subject|int $subject, Classroom|int $classroom)
+	private function createDetailClassroom(int $main_id, $classroom)
+	{
+		$id = $main_id;
+
+		foreach ($classroom as $data) {
+			$Detail = new DetailClassroom();
+			$Detail->main_id = $id;
+			$Detail->table = 'Lesson';
+			$Detail->class_id = $data;
+			$Detail->save();
+		}
+		return $Detail;
+	}
+
+	public function create(string $title, string $description, ?UploadedFile $file, int $teacherId, Subject|int $subject, array $classroom)
 	{
 		$Lesson = new Lesson();
 		$Lesson->teacher_id = $teacherId;
 		$Lesson->subject_id = $subject instanceof Subject ? $subject->id : $subject;
-		$Lesson->classroom_id = $classroom instanceof Classroom ? $classroom->id : $classroom;
 		$Lesson->title = $title;
 		$Lesson->description = $description;
         
         if($file !== null){
-			$file->move(public_path('images/student'), $fileName = Str::random(16) . '.' . $file->extension());
+			$fileName = $file->storeAs('public/lessons', $file->hashName());
 			$Lesson->content = $fileName;
 		}
 		$Lesson->save();
+
+		$this->createDetailClassroom($Lesson->id, $classroom);
 		return $Lesson;
 	}
 

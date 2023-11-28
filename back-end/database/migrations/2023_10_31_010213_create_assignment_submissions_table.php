@@ -11,13 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('submissions', function (Blueprint $table) {
+        Schema::create('assignments_submissions', function (Blueprint $table) {
             $table->id();
             $table->foreignID('assignment_id')->references('id')->on('assignments')->cascadeOnDelete();
             $table->foreignID('student_id')->references('user_id')->on('students')->cascadeOnDelete();
 
 			$table->dateTime('date');
-			$table->string('file');
+			$table->string('file')->nullable();
+			$table->string('comment');
 			$table->timestamps();
         });
     }

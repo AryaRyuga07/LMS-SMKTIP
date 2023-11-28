@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Assignment extends Model
 {
+	protected $table = 'assignments';
+
     protected $casts = [
 		'teacher_id' => 'int',
 		'subject_id' => 'int',

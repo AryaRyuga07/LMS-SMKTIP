@@ -19,7 +19,7 @@ return new class extends Migration
 			$table->unique(['attendance_id', 'student_id']);
 			
             $table->enum('status', ['present', 'excused', 'sick']);
-
+            $table->string('file')->nullable();
 			$table->timestamps();
         });
     }

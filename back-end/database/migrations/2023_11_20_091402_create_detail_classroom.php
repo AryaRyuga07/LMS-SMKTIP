@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('detail_classroom', function (Blueprint $table) {
             $table->string('main_id');
+            $table->string('table');
             $table->string('class_id');
             $table->timestamps();
         });

@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Lesson;
 use App\Services\Teacher\LessonService;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class LessonController extends Controller
 {
@@ -15,33 +16,53 @@ class LessonController extends Controller
         $id = $request->id;
 
 		if ($id == null) {
-			return Lesson::all();
+			return Lesson::query()->where('teacher_id', $request->user)->get();
 		} else {
-			return Lesson::query()->find($request->id);
+			$lesson = DB::table('lessons')
+                ->where('lessons.id', $request->id)
+                ->select('lessons.id as id', 'lessons.title as title','lessons.description as description','lessons.subject_id as id_subject')
+                ->get();
+
+			$classroom = DB::table('lessons')
+			->join('detail_classroom', function ($join) {
+				$join->on('lessons.id', '=', 'detail_classroom.main_id');
+			})
+			->where('lessons.id', $request->id)
+			->select('detail_classroom.class_id')
+			->get();
+
+			$data = [];
+
+			foreach ($classroom as $detail) {
+				$data[] = $detail->class_id;
+			}
+
+			foreach ($lesson as $item) {
+				$item->class_id = $data;
+			}
+
+			return $lesson;
 		}
     }
 
     public function createLesson(Request $request) {
 		$request->validate([
-			'subject_id' => 'required',
-			'classroom_id' => 'required',
-			'title' => 'required|string|regex:/^[a-zA-Z\s]*$/',
+			'id_subject' => 'required',
+			'id_teacher' => 'required',
+			'title' => 'required|string|regex:/^[.,a-zA-Z0-9\s]*$/',
 			'content' => 'nullable',
-			'description' => 'required|string|regex:/^[a-zA-Z\s]*$/',
-			// 'starts_at' => 'required|date_format:m/d/Y H:i',
-			// 'ends_at' => 'required|date_format:m/d/Y H:i',
+			'description' => 'required|string|regex:/^[.,a-zA-Z0-9\s]*$/',
 		]);
 
         LessonService::getInstance()->create(
 			$request->title,
 			$request->description,
             $request->file('content'),
-            $request->teacher_id,
-			(int) $request->subject_id,
-			(int) $request->classroom_id,
-			// Carbon::createFromFormat('m/d/Y H:i', $request->post('start_at')),
-			// Carbon::createFromFormat('m/d/Y H:i', $request->post('end_at')),
+            $request->id_teacher,
+			(int) $request->id_subject,
+			$request->checkedItems,
 		);
+
 		return response()->json(['message' => 'Create Data Success']);
 	}
 
@@ -65,9 +86,9 @@ class LessonController extends Controller
 		return response()->json(['message' => 'Update Data Success']);
 	}
 
-	public function deleteLesson(Lesson $Lesson, Request $request) {
-		$Lesson->delete();
-
+	public function deleteLesson(Request $request) {
+		Lesson::query()->find($request->id)->delete();
+		DB::table('detail_classroom')->where('main_id', $request->id)->where('data', 'Lesson')->delete();
 		return response()->json(['message' => 'Delete Data Success']);
 	}
 }
