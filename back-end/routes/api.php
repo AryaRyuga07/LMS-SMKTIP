@@ -120,6 +120,7 @@ Route::prefix('/assignment')->group(function () {
 Route::prefix('/grade')->group(function () {
     Route::post('/', [GradeController::class, 'grade']);
     Route::post('/student', [GradesAllController::class, 'getGrades']);
+    Route::post('/student/classroom', [GradesAllController::class, 'getGradesClassroom']);
 });
 Route::prefix('/lesson')->group(function () {
     Route::post('/', [LessonController::class, 'LessonAll']);

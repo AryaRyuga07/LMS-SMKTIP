@@ -15,13 +15,15 @@ class SubmissionController
     public function AttendanceSubmitted(Request $req)
     {
         $id = $req->id;
-        return AttendanceSubmission::query()->where('student_id', $id)->first();
+        $attId = $req->idAtt;
+        return AttendanceSubmission::query()->where('student_id', $id)->where('attendance_id', $attId)->first();
     }
     
     public function AssignmentSubmitted(Request $req)
     {
         $id = $req->id;
-        return AssignmentSubmission::query()->where('student_id', $id)->first();
+        $assignId = $req->idAssign;
+        return AssignmentSubmission::query()->where('student_id', $id)->where('assignment_id', $assignId)->first();
     }
 
     public function AttendanceSubmission(Request $req)

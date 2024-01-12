@@ -56,7 +56,6 @@ const Schedule = () => {
 
   const Insert = () => {
     const {teacher_id, subject_id, classroom_id} = scheduleData;
-    console.log(teacher_id)
     axios
       .post("http://localhost:8000/api/schedule/data/add", { teacher_id, subject_id, classroom_id })
       .then((res) => {
@@ -135,12 +134,6 @@ const Schedule = () => {
       width: "12rem",
       cell: (row) => (
         <div className="flex">
-          <button
-            className="w-16 mr-5 bg-blue-600 p-2 rounded-md text-white hover:text-black hover:bg-blue-200 transition duration-300"
-            onClick={() => setIdUpdate(row.id)}
-          >
-            Edit
-          </button>
           <button
             className="w-16 bg-red-700 p-2 rounded-md text-white hover:text-black hover:bg-red-300 transition duration-300"
             onClick={() => setIdDelete(row.id)}

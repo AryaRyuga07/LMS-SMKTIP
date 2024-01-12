@@ -33,6 +33,7 @@ import Tester from "../../Tester/Tester";
 import AttendanceResult from "../Teacher/Result/AttendanceResult";
 import AssignmentResult from "../Teacher/Result/AssignmentResult";
 import Grade from "../Teacher/Grade/Grade";
+import First from "../Login/First";
 
 function App() {
   return (
@@ -67,7 +68,7 @@ function App() {
         <Route path="/announcement" element={<ProtectedAdmin UserComponent={<AnnouncementUser />} />} />
         <Route path="/lesson" element={<ProtectedAdmin UserComponent={<LessonUser />} />} />
         {/* Routes Test */}
-        <Route path="/" element={<ProtectedAdmin UserComponent={<Home />} />} />
+        <Route path="/" element={<ProtectedAdmin UserComponent={<First />} />} />
         <Route path="/component/test" element={<Tester />} />
         <Route path="*" element={ <NotFound /> } />
       </Routes>

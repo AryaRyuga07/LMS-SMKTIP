@@ -21,8 +21,9 @@ const AttendanceSub = () => {
 
   useEffect(() => {
     const id = localStorage.getItem("user-id");
+    const idAtt = localStorage.getItem("attendance-id");
     axios
-      .post("http://localhost:8000/api/submitted/attendance/" + id)
+      .post("http://localhost:8000/api/submitted/attendance/" + id, { idAtt })
       .then((res) => {
         if (res.data != "") {
           setSelectedValue(res.data.status);

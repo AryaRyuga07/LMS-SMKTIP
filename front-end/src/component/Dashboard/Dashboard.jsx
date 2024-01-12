@@ -13,7 +13,7 @@ import { Doughnut, Pie, Bar } from "react-chartjs-2";
 
 const Dashboard = () => {
   const data = {
-    labels: ["Week 1", "Week 2", "Week 3", "Week 4"],
+    labels: ["January", "February", "March", "April", "May", "June", "July"],
     datasets: [
       {
         label: "Number of Logins",
@@ -73,9 +73,7 @@ const Dashboard = () => {
           <Pie data={data} />
         </div>
       </div>
-      <div className="mt-5 py-8 px-16 rounded-lg shadow-md shadow-slate-400">
-        <Bar options={options} data={data} />
-      </div>
+        {/* <div className="mt-5 py-8 px-16 rounded-lg shadow-md shadow-slate-400"></div> */}
     </div>
   );
 };

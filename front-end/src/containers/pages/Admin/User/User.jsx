@@ -55,6 +55,7 @@ const User = () => {
           username: res.data.user.name,
           password: res.data.user.password,
         });
+        console.log(res.data)
       })
       .catch((err) => {
         setStudent({ message: "get data failed" });

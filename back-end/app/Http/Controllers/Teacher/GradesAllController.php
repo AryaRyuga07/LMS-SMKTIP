@@ -12,6 +12,11 @@ class GradesAllController extends Controller
     {
         return DB::table('grade_student')->get();
     }
+    
+    public function getGradesClassroom(Request $request)
+    {
+        return DB::table('grade_student')->where('Classroom', $request->classroom)->get();
+    }
 
     public function getClassroom(Request $request)
     {

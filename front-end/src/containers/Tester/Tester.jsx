@@ -1,59 +1,50 @@
 import React from "react";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import Password from "../../component/Password/Password";
 
 const Tester = () => {
-  const [data, setData] = useState({ username: "", password: "", message: "" });
-  const navigate = useNavigate();
+  const [currentIndex, setCurrentIndex] = useState(0);
 
-  const handleChangeText = (e) => {
-    setData({
-      ...data,
-      [e.name]: e.value,
-    });
+  const handlePrev = () => {
+    setCurrentIndex((prevIndex) => (prevIndex === 0 ? 2 : prevIndex - 1));
   };
 
-  const handleLoginSubmit = () => {
-    const { username, password } = data;
-    axios
-      .post("http://localhost:8000/api/login", { username, password })
-      .then((res) => {
-        setData({ message: res.data.message });
-        if (res.data.role == "Admin") {
-          navigate("/admin/dashboard");
-        } else if (res.data.role == "Teacher") {
-          navigate("/teacher/dashboard");
-        } else {
-          navigate("/");
-        }
-      })
-      .catch((err) => {
-        setData({ message: "login failed" });
-      });
+  const handleNext = () => {
+    setCurrentIndex((prevIndex) => (prevIndex === 2 ? 0 : prevIndex + 1));
   };
 
   return (
-    <>
-      <div className="w-screen h-screen flex justify-center items-center">
-        <div className="bg-green-500 w-[35rem] h-96 flex flex-col justify-center items-center rounded-br-[23rem] rounded-tl-[25rem]">
-          <h1 className="text-3xl font-bold mb-5">Login Page</h1>
-          <input
-            className="h-12 w-[14.5rem] border rounded-md mb-5 px-3"
-            type="text"
-            name="username"
-            placeholder="Username"
-            onChange={({ target }) => handleChangeText(target)}
-          />
-          <Password onChange={({ target }) => handleChangeText(target)} />
-          <button className="bg-blue-700 hover:bg-blue-300 transition duration-300 text-xl font-bold py-2 w-56 mt-5 rounded-md mb-5" onClick={handleLoginSubmit}>
-            Login
-          </button>
-          <p>{data.message}</p>
+    <div className="flex items-center justify-center h-screen">
+      <button
+        className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full"
+        onClick={handlePrev}
+      >
+        &lt;
+      </button>
+      <div className="relative w-64 h-32 overflow-hidden">
+        <div
+          className="flex transition-transform duration-300 ease-in-out"
+          style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+        >
+          <div className="w-full bg-blue-500 flex items-center justify-center">
+            Slide 1
+          </div>
+          {/* Konten Slide 2 */}
+          <div className="w-full bg-green-500 flex items-center justify-center">
+            Slide 2
+          </div>
+          {/* Konten Slide 3 */}
+          <div className="w-full bg-red-500 flex items-center justify-center">
+            Slide 3
+          </div>
         </div>
       </div>
-    </>
+      <button
+        className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full"
+        onClick={handleNext}
+      >
+        &gt;
+      </button>
+    </div>
   );
 };
 

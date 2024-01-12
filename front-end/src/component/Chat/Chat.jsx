@@ -117,6 +117,7 @@ const Chat = (props) => {
         <h1 className="text-2xl mb-4 mt-10">Attendance</h1>
         <div className="flex">{AttendanceCard(props.attendance)}</div>
       </div>
+      
     </div>
   );
 }

@@ -32,7 +32,8 @@ const AssignmentResult = () => {
   };
 
   const handleGradeText = (e) => {
-    setGrade(e.value);
+    const numericInput = e.value.replace(/[^0-9]/g, '');
+    setGrade(numericInput);
     if (grade > 99) {
       setGrade(99);
     } else if (grade < 1) {
@@ -109,7 +110,7 @@ const AssignmentResult = () => {
           ) : (
             <td className="px-2 py-4">
               <input
-                type="number"
+                type="text"
                 className="border-2 border-slate-400 rounded-md mr-2 pl-2"
                 value={grade}
                 onChange={({ target }) => handleGradeText(target)}

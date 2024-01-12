@@ -29,7 +29,7 @@ class ScheduleController extends Controller
                 ->join('classrooms', function ($join) {
                     $join->on('schedules.classroom_id', '=', 'classrooms.id');
                 })
-                ->select('schedules.id','teachers.full_name as teacher', 'subjects.name as subject', 'classrooms.name as classroom')
+                ->select('schedules.id', 'teachers.full_name as teacher', 'subjects.name as subject', 'classrooms.name as classroom')
                 ->get();
 
             return $schedule;
@@ -45,7 +45,7 @@ class ScheduleController extends Controller
                     $join->on('schedules.classroom_id', '=', 'classrooms.id');
                 })
                 ->where('schedules.id', $request->id)
-                ->select('schedules.id','teachers.full_name as teacher', 'subjects.name as subject', 'classrooms.name as classroom')
+                ->select('schedules.id', 'teachers.full_name as teacher', 'subjects.name as subject', 'classrooms.name as classroom')
                 ->first();
 
             return $schedule;
@@ -81,6 +81,21 @@ class ScheduleController extends Controller
             'subject_id' => 'required',
             'classroom_id' => 'required',
         ]);
+
+        $existingSchedule = DB::table('schedules')
+            ->where('teacher_id', $request->teacher_id)
+            ->where('subject_id', $request->subject_id)
+            ->where('classroom_id', $request->classroom_id)
+            ->exists();
+
+        // Mengecek apakah classroom_id sudah ada pada jadwal lain
+        $classroomExists = DB::table('schedules')
+            ->where('classroom_id', $request->classroom_id)
+            ->exists();
+
+        if ($existingSchedule && $classroomExists) {
+            return response()->json(['error' => 'Jadwal sudah ada.'], 422);
+        }
 
         $Schedule = new Schedule();
         $Schedule->teacher_id = $request->teacher_id;

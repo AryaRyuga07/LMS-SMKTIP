@@ -5,8 +5,8 @@ import * as XLSX from "xlsx";
 
 const Grade = () => {
   const [grade, setGrade] = useState([]);
-  //   const [classroom, setClassroom] = useState([]);
-  //   const [attClass, setAttClass] = useState({});
+  const [classroom, setClassroom] = useState([]);
+  const [gradeClass, setGradeClass] = useState({});
 
   //   const getAttendance = (idClass) => {
   //     const id = localStorage.getItem("attendance-id");
@@ -21,11 +21,54 @@ const Grade = () => {
   //       });
   //   };
 
+  const getClassroom = () => {
+    axios
+      .post("http://localhost:8000/api/classroom")
+      .then((res) => {
+        setClassroom(res.data);
+      })
+      .catch((err) => {
+        setClassroom({ message: "get data failed" });
+      });
+  };
+
+  const optionOnChange = (e) => {
+    setGradeClass({
+      ...gradeClass,
+      [e.name]: e.value,
+    });
+    setTimeout(() => {
+      getGrade(e.value);
+    }, 100);
+  };
+
+  const renderOption = (data) => {
+    return data.map((item, index) => {
+      return (
+        <option key={index} value={item.name}>
+          {item.name}
+        </option>
+      );
+    });
+  };
+
+  const getGrade = (classroom) => {
+    axios
+      .post("http://localhost:8000/api/grade/student/classroom", { classroom })
+      .then((res) => {
+        setGrade(res.data);
+      })
+      .catch((err) => {
+        setGrade({ message: "get data failed" });
+      });
+  };
+
   useEffect(() => {
     axios
       .post("http://localhost:8000/api/grade/student")
       .then((res) => {
         setGrade(res.data);
+        getClassroom();
       })
       .catch((err) => {
         setGrade({ message: "get data failed" });
@@ -53,13 +96,13 @@ const Grade = () => {
   //   };
 
   const exportToExcel = () => {
-    const dataArray = grade.map(item => Object.values(item)); // Konversi objek menjadi array
+    const dataArray = grade.map((item) => Object.values(item)); // Konversi objek menjadi array
     const header = Object.keys(grade[0]); // Ambil nama kolom sebagai header
 
     const ws = XLSX.utils.aoa_to_sheet([header, ...dataArray]);
     const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-    XLSX.writeFile(wb, 'table_data.xlsx');
+    XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+    XLSX.writeFile(wb, "table_data.xlsx");
   };
 
   const renderRow = (data) => {
@@ -79,7 +122,7 @@ const Grade = () => {
           <td class="px-6 py-4">{item.NISN}</td>
           <td class="px-6 py-4">{item.Name}</td>
           <td class="px-6 py-4">{item.Classroom}</td>
-          <td class="px-6 py-4">{item.Grade}</td>
+          <td class="px-6 py-4">{item.Grade === null ? 0 : item.Grade}</td>
         </tr>
       );
     });
@@ -110,26 +153,35 @@ const Grade = () => {
             Download CSV
           </button>
         </div> */}
-        <div class="relative overflow-x-auto shadow-md sm:rounded-lg w-[94vw]">
-          <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        <select
+          id="classroom"
+          name="classroom"
+          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-52 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mb-7"
+          onChange={({ target }) => optionOnChange(target)}
+        >
+          <option selected>Choose a classroom</option>
+          {renderOption(classroom)}
+        </select>
+        <div className="relative overflow-x-auto shadow-md sm:rounded-lg w-[94vw]">
+          <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
               <tr>
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" className="px-6 py-3">
                   Subject
                 </th>
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" className="px-6 py-3">
                   Assignment
                 </th>
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" className="px-6 py-3">
                   NISN
                 </th>
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" className="px-6 py-3">
                   Student Name
                 </th>
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" className="px-6 py-3">
                   Classroom
                 </th>
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" className="px-6 py-3">
                   Grade
                 </th>
               </tr>

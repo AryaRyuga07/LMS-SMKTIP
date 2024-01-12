@@ -14,8 +14,9 @@ const AssignmentSub = () => {
 
   useEffect(() => {
     const id = localStorage.getItem("user-id");
+    const idAssign = localStorage.getItem("assignment-id");
     axios
-      .post("http://localhost:8000/api/submitted/assignment/" + id)
+      .post("http://localhost:8000/api/submitted/assignment/" + id, { idAssign })
       .then((res) => {
         if (res.data != "") {
           setButtonVisibility(false);
